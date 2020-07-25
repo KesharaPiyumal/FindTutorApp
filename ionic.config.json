@@ -1,0 +1,7 @@
+{
+  "name": "FindTutor",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
