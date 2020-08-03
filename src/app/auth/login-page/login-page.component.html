@@ -11,20 +11,21 @@
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Welcome!</ion-card-subtitle>
-      <ion-card-title>Register Here,</ion-card-title>
+      <ion-card-title>Login Here,</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <form [formGroup]="registerForm" class="m-3">
+      <form [formGroup]="loginForm" class="m-3">
         <ion-item>
           <ion-label position="stacked">Email </ion-label>
-          <ion-input type="email" formControlName="email"></ion-input>
+          <ion-input formControlName="email"></ion-input>
         </ion-item>
         <ion-item class="mb-3">
           <ion-label position="stacked">Password </ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
+          <ion-input formControlName="password"></ion-input>
         </ion-item>
-        <ion-button expand="block" (click)="registerUser(user)">Register</ion-button>
+        <ion-button expand="block" (click)="userLogin(user)">Login</ion-button>
+        <ion-button color="light" expand="block" (click)="goToRegisterPage()">Register</ion-button>
       </form>
     </ion-card-content>
   </ion-card>
