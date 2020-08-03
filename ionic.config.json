@@ -1,7 +1,8 @@
 {
   "name": "FindTutor",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
