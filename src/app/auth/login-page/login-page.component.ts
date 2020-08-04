@@ -40,8 +40,8 @@ export class LoginPageComponent implements OnInit {
       user.password = this.password.value;
       await this.afAuth.signInWithEmailAndPassword(user.email, user.password).then((data) => {
         console.log(data);
-        this.showToast(data.toString());
-        this.router.navigate(['folder/inbox']).then((result) => {});
+        this.showToast(JSON.stringify(data));
+        // this.router.navigate(['folder/inbox']).then((result) => {});
       });
     } catch (e) {
       console.log(e);
