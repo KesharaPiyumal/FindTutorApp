@@ -5,9 +5,10 @@ import { RegisterPageComponent } from './register-page/register-page.component';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginPageComponent } from './login-page/login-page.component';
+import {NbButtonModule, NbInputModule} from '@nebular/theme';
 
 @NgModule({
   declarations: [RegisterPageComponent, LoginPageComponent],
-  imports: [CommonModule, AuthRoutingModule, IonicModule, ReactiveFormsModule],
+    imports: [CommonModule, AuthRoutingModule, IonicModule, ReactiveFormsModule, NbInputModule, NbButtonModule],
 })
 export class AuthModule {}

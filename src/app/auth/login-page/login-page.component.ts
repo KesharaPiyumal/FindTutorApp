@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
+import { FormValidationHelperService } from '../../@common/form-validation-helper.service';
 
 @Component({
   selector: 'app-login-page',
@@ -17,7 +18,9 @@ export class LoginPageComponent implements OnInit {
     public formBuilder: FormBuilder,
     public router: Router,
     private afAuth: AngularFireAuth,
-    public toastService: ToastController
+    public toastController: ToastController,
+    public loadingController: LoadingController,
+    private formValidationHelperService: FormValidationHelperService
   ) {}
 
   ngOnInit() {
@@ -35,16 +38,26 @@ export class LoginPageComponent implements OnInit {
   }
 
   async userLogin(user: User) {
-    try {
-      user.email = this.email.value;
-      user.password = this.password.value;
-      await this.afAuth.signInWithEmailAndPassword(user.email, user.password).then((data) => {
-        console.log(data);
-        this.showToast(JSON.stringify(data));
-        // this.router.navigate(['folder/inbox']).then((result) => {});
-      });
-    } catch (e) {
-      console.log(e);
+    if (this.loginForm.invalid) {
+      this.formValidationHelperService.validateAllFormFields(this.loginForm);
+    } else {
+      try {
+        user.email = this.email.value;
+        user.password = this.password.value;
+        this.presentLoading();
+        await this.afAuth
+          .signInWithEmailAndPassword(user.email, user.password)
+          .then((data) => {
+            this.showToast('Logged in successfully!');
+            this.loadingController.dismiss();
+            this.router.navigate(['home/']).then((result) => {});
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -52,12 +65,21 @@ export class LoginPageComponent implements OnInit {
     this.router.navigate(['auth/register']).then((r) => {});
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: 'bubbles',
+    });
+    await loading.present();
+  }
+
   showToast(msg: string) {
-    this.toastService
+    this.toastController
       .create({
         message: msg,
-        duration: 3000,
+        duration: 1000,
+        position: 'bottom',
       })
-      .then((r) => r.present);
+      .then((result) => result.present())
+      .catch((e) => console.log(e));
   }
 }

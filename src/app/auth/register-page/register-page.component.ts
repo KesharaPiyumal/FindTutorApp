@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { FormValidationHelperService } from '../../@common/form-validation-helper.service';
 
 @Component({
   selector: 'app-register-page',
@@ -11,7 +12,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 export class RegisterPageComponent implements OnInit {
   user = {} as User;
   registerForm: FormGroup;
-  constructor(public formBuilder: FormBuilder, private afAuth: AngularFireAuth) {}
+  constructor(
+    public formBuilder: FormBuilder,
+    private afAuth: AngularFireAuth,
+    private formValidationHelperService: FormValidationHelperService
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -26,6 +31,7 @@ export class RegisterPageComponent implements OnInit {
     return this.registerForm.get('password');
   }
   async registerUser(user: User) {
+    this.validateForm();
     try {
       user.email = this.email.value;
       user.password = this.password.value;
@@ -34,6 +40,13 @@ export class RegisterPageComponent implements OnInit {
       });
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  validateForm() {
+    if (!this.registerForm.invalid) {
+      this.formValidationHelperService.validateAllFormFields(this.registerForm);
+      return;
     }
   }
 }
