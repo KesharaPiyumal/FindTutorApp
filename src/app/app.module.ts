@@ -12,15 +12,17 @@ import FireBaseConfig from './fireBaseConfig';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import {NbThemeModule, NbLayoutModule} from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbToastrModule } from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(FireBaseConfig),
@@ -28,6 +30,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     AngularFirestoreModule,
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: 'default' }),
+    NbToastrModule.forRoot(),
     NbLayoutModule,
     NbEvaIconsModule,
   ],

@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { LoadingController, ToastController } from '@ionic/angular';
-import { FormValidationHelperService } from '../../@common/form-validation-helper.service';
+import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
   selector: 'app-login-page',
@@ -14,13 +15,15 @@ import { FormValidationHelperService } from '../../@common/form-validation-helpe
 export class LoginPageComponent implements OnInit {
   user = {} as User;
   loginForm: FormGroup;
+  loading = false;
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
     private afAuth: AngularFireAuth,
     public toastController: ToastController,
     public loadingController: LoadingController,
-    private formValidationHelperService: FormValidationHelperService
+    private formValidationHelperService: FormValidationHelperService,
+    public nbToastService: NbToastrService
   ) {}
 
   ngOnInit() {
@@ -44,19 +47,21 @@ export class LoginPageComponent implements OnInit {
       try {
         user.email = this.email.value;
         user.password = this.password.value;
-        this.presentLoading();
+        this.loading = true;
         await this.afAuth
           .signInWithEmailAndPassword(user.email, user.password)
           .then((data) => {
-            this.showToast('Logged in successfully!');
-            this.loadingController.dismiss();
+            this.loading = false;
+            this.nbToastService.show('Logged Successfully!', 'Success', { status: 'success' });
             this.router.navigate(['home/']).then((result) => {});
           })
           .catch((e) => {
-            console.log(e);
+            this.loading = false;
+            this.nbToastService.show(e, 'Warning', { status: 'warning' });
           });
       } catch (e) {
-        console.log(e);
+          this.loading = false;
+          this.nbToastService.show(e, 'Warning', { status: 'warning' });
       }
     }
   }
