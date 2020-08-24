@@ -13,7 +13,7 @@ import { AgmCoreModule } from '@agm/core';
         NbIconModule,
         NbInputModule,
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyBfUL3bfzhedACSAuEKVVbUQ9BdVRamaNk',
+            apiKey: '',
             libraries: ['places']
         }),
         NbButtonModule,
