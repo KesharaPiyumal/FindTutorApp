@@ -3,9 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { LoadingController, ToastController } from '@ionic/angular';
 import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
-import { NbToastrService } from '@nebular/theme';
+import { ToastService } from '../../@common/services/toast.service';
+import { EssentialDataService } from '../essential-data.service';
+import { StatusCodes, ToastStatus } from '../../@common/enum';
+import * as jwt_decode from 'jwt-decode';
+import { Settings } from '../../@common/settings';
 
 @Component({
   selector: 'app-login-page',
@@ -20,10 +23,9 @@ export class LoginPageComponent implements OnInit {
     public formBuilder: FormBuilder,
     public router: Router,
     private afAuth: AngularFireAuth,
-    public toastController: ToastController,
-    public loadingController: LoadingController,
     private formValidationHelperService: FormValidationHelperService,
-    public nbToastService: NbToastrService
+    private toastService: ToastService,
+    private essentialDataService: EssentialDataService
   ) {}
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class LoginPageComponent implements OnInit {
     return this.loginForm.get('password');
   }
 
-  async userLogin(user: User) {
+  userLogin(user: User) {
     if (this.loginForm.invalid) {
       this.formValidationHelperService.validateAllFormFields(this.loginForm);
     } else {
@@ -48,20 +50,30 @@ export class LoginPageComponent implements OnInit {
         user.email = this.email.value;
         user.password = this.password.value;
         this.loading = true;
-        await this.afAuth
-          .signInWithEmailAndPassword(user.email, user.password)
-          .then((data) => {
+        this.essentialDataService.tutorLogin({ email: user.email, password: user.password }).subscribe(
+          (response) => {
             this.loading = false;
-            this.nbToastService.show('Logged Successfully!', 'Success', { status: 'success' });
-            this.router.navigate(['home/']).then((result) => {});
-          })
-          .catch((e) => {
+            if (response.statusCode === StatusCodes.Success) {
+              const decodeToken = this.getDecodedAccessToken(response.data.token);
+              decodeToken.token = response.data.token;
+              Settings.token = response.data.token;
+              Settings.userId = decodeToken.userId;
+              Settings.email = decodeToken.email;
+              Settings.displayName = decodeToken.displayName;
+              localStorage.setItem('currentUser', JSON.stringify(decodeToken));
+              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+              this.router.navigate(['home/']).then((r) => {});
+            } else if (response.statusCode === StatusCodes.Unauthorized && response.data['active'] === 'false') {
+              this.toastService.showToast(ToastStatus.Warning, 'Warning!', response.message);
+              this.router.navigate(['auth/verify']).then((r) => {});
+            }
+          },
+          (error) => {
             this.loading = false;
-            this.nbToastService.show(e, 'Warning', { status: 'warning' });
-          });
+          }
+        );
       } catch (e) {
-          this.loading = false;
-          this.nbToastService.show(e, 'Warning', { status: 'warning' });
+        this.loading = false;
       }
     }
   }
@@ -70,21 +82,11 @@ export class LoginPageComponent implements OnInit {
     this.router.navigate(['auth/register']).then((r) => {});
   }
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      spinner: 'bubbles',
-    });
-    await loading.present();
-  }
-
-  showToast(msg: string) {
-    this.toastController
-      .create({
-        message: msg,
-        duration: 1000,
-        position: 'bottom',
-      })
-      .then((result) => result.present())
-      .catch((e) => console.log(e));
+  getDecodedAccessToken(token: string): any {
+    try {
+      return jwt_decode(token);
+    } catch (Error) {
+      return null;
+    }
   }
 }

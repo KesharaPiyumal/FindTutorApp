@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../user';
+import { Tutor, User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -8,9 +8,10 @@ import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { StatusCodes, ToastStatus, UserType } from '../../@common/enum';
 import { ToastService } from '../../@common/services/toast.service';
 import { EssentialDataService } from '../essential-data.service';
-import { IonRouterOutlet, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { ModalLocationPageComponent } from './modal-location-page/modal-location-page.component';
 import { NbPopoverDirective } from '@nebular/theme';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -31,18 +32,23 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   subjectsDropdown = [];
   examsLoading = false;
   subjectsLoading = false;
+  userLoading = false;
   UserType: typeof UserType = UserType;
   selectedExamId: any;
   selectedMediumId: any;
+  private lat: any;
+  private lon: any;
+
   constructor(
     public formBuilder: FormBuilder,
     private afAuth: AngularFireAuth,
     private formValidationHelperService: FormValidationHelperService,
     private geolocation: Geolocation,
-    private toastrService: ToastService,
+    private toastService: ToastService,
     private essentialDataService: EssentialDataService,
     private diagnostic: Diagnostic,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public router: Router
   ) {}
 
   ngOnInit() {
@@ -117,23 +123,6 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     }, 5000);
   }
 
-  async registerUser(user: User) {
-    if (user.lat && user.long) {
-      try {
-        user.email = this.email.value;
-        user.password = this.password.value;
-        await this.afAuth.createUserWithEmailAndPassword(user.email, user.password).then((result) => {
-          console.log(result);
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    } else {
-      this.toastrService.showToast(ToastStatus.Danger, 'Alert', 'Your have to give your location!');
-      this.diagnostic.switchToLocationSettings();
-    }
-  }
-
   getAllExams() {
     this.examsLoading = true;
     this.essentialDataService.getAllExams().subscribe(
@@ -141,14 +130,10 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         this.examsLoading = false;
         if (response.statusCode === StatusCodes.Success) {
           this.examList = response.data;
+          this.examsDropdown = [];
           this.examList.forEach((item) => {
             this.examsDropdown.push({ label: item['name'], value: item['id'] });
           });
-          setTimeout(() => {
-            this.registerFormAdv.patchValue({
-              examId: this.examsDropdown[0]['value'],
-            });
-          }, 0);
         }
       },
       (error) => {
@@ -165,14 +150,12 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         this.subjectsLoading = false;
         if (response.statusCode === StatusCodes.Success) {
           this.subjectsDropdown = [];
+          this.registerFormAdv.patchValue({
+            subjectIds: [[]],
+          });
           response.data.forEach((item) => {
             this.subjectsDropdown.push({ label: item['name'], value: item['id'] });
           });
-          // setTimeout(() => {
-          //   this.registerFormAdv.patchValue({
-          //     examId: this.examsDropdown[0]['value'],
-          //   });
-          // }, 0);
         }
       },
       (error) => {
@@ -213,6 +196,8 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     await modal.present();
     const modalData = await modal.onWillDismiss();
     if (modalData.data.lat && modalData.data.lon) {
+      this.lat = modalData.data.lat;
+      this.lon = modalData.data.lon;
       this.registerFormAdv.patchValue({
         location: modalData.data.lat + ', ' + modalData.data.lon,
       });
@@ -241,5 +226,34 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     if (this.selectedExamId && this.selectedMediumId) {
       this.getAllSubjects();
     }
+  }
+
+  registerUser() {
+    this.userLoading = true;
+    const tutor: Tutor = {
+      address: this.address.value,
+      email: this.email.value,
+      examId: this.examId.value,
+      firstName: this.firstName.value,
+      lastName: this.lastName.value,
+      lat: this.lat.toString(),
+      lon: this.lon.toString(),
+      mediumId: this.mediumId.value,
+      mobileNumber: this.phoneNumber.value.toString(),
+      password: this.password.value,
+      subjectIds: this.subjectIds.value,
+    };
+    this.essentialDataService.registerTutor(tutor).subscribe(
+      (response) => {
+        this.userLoading = false;
+        if (response.statusCode === StatusCodes.Success) {
+          this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+          this.router.navigate(['auth/login']).then((r) => {});
+        }
+      },
+      (error) => {
+        this.userLoading = false;
+      }
+    );
   }
 }

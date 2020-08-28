@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // baseUrl: 'http://localhost:5001/'
-  baseUrl: 'https://findtutor-285212.uc.r.appspot.com/'
+  baseUrl: 'https://findtutor-285212.uc.r.appspot.com/',
 };
 
 /*

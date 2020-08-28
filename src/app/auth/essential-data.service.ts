@@ -9,6 +9,7 @@ export class EssentialDataService {
   examsUrl = 'exam';
   // mediumsUrl = 'medium';
   subjectsUrl = 'subject';
+  tutorUrl = 'tutor';
   constructor(public commonHttpService: CommonHttpService) {}
 
   getAllExams() {
@@ -21,6 +22,30 @@ export class EssentialDataService {
 
   getAllSubjectsForExamAndMedium(reqData) {
     return this.commonHttpService.postData(this.subjectsUrl + '/getAll', reqData).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  registerTutor(tutorData) {
+    return this.commonHttpService.postData(this.tutorUrl + '/register', tutorData).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  tutorLogin(tutorData) {
+    return this.commonHttpService.postData(this.tutorUrl + '/login', tutorData).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  tutorVerify(token) {
+    return this.commonHttpService.postData(this.tutorUrl + '/verify', token).pipe(
       map((data) => {
         return data;
       })

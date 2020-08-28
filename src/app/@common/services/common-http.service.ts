@@ -61,9 +61,7 @@ export class CommonHttpService {
           if (response && response.statusCode === StatusCodes.Success) {
             return response;
           } else if (response && response.statusCode === StatusCodes.Unauthorized) {
-            // this.authService.logout();
-            // window.open(environment.authUrl + 'auth/login?returnUrl=' + environment.appUrl, '_self');
-            this.toastService.showToast('danger', 'Error', response.message);
+            return response;
           } else if (response && response.statusCode === StatusCodes.InvalidToken) {
             // this.authService.logout();
             // window.alert('Token Expired. Please login again');

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MenuController, Platform} from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { MenuController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -60,4 +58,6 @@ export class HomeComponent implements OnInit {
   async openMenu() {
     await this.menu.open();
   }
+
+  menuPopUpControl() {}
 }

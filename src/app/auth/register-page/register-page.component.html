@@ -1,10 +1,10 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [nbSpinner]="examsLoading || subjectsLoading" nbSpinnerStatus="info">
   <div class="d-flex w-100 flex-column pt-5">
     <div class="d-flex justify-content-center">
       <img style="width: 20%;" alt="" src="../../../assets/icon.png" />
     </div>
   </div>
-  <div class="pl-3 pb-3 pr-3" [nbSpinner]="examsLoading" nbSpinnerStatus="info">
+  <div class="pl-3 pb-3 pr-3">
     <nb-stepper orientation="horizontal" [linear]="true">
       <!--      <nb-step class="p-0" [stepControl]="registerFormCommon">-->
       <nb-step class="p-0" [stepControl]="registerFormCommon">
@@ -211,7 +211,13 @@
               </nb-select>
             </div>
             <div class="col-md-12 mb-2">
-              <nb-select placeholder="Medium" formControlName="mediumId" fullWidth class="d-flex flex-row align-items-center" (ngModelChange)="mediumChange($event)">
+              <nb-select
+                placeholder="Medium"
+                formControlName="mediumId"
+                fullWidth
+                class="d-flex flex-row align-items-center"
+                (ngModelChange)="mediumChange($event)"
+              >
                 <nb-option *ngFor="let medium of mediumDropdown" [value]="medium['value']">{{ medium['label'] }}</nb-option>
               </nb-select>
             </div>
@@ -226,7 +232,7 @@
           <button nbButton outline status="primary" nbStepperPrevious>
             <nb-icon pack="eva" icon="chevron-left-outline"></nb-icon>prev
           </button>
-          <button nbButton status="primary">Register</button>
+          <button nbButton status="primary" (click)="registerUser()">Register</button>
         </div>
       </nb-step>
     </nb-stepper>

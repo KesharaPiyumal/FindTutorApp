@@ -41,11 +41,14 @@
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
-        <ion-title>Inbox</ion-title>
+        <ion-title>Home</ion-title>
+        <ion-buttons slot="end">
+          <ion-button shape="round" (click)="menuPopUpControl()"><ion-icon name="ellipsis-vertical-outline"></ion-icon></ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <ion-button expand="block" (click)="openMenu()">Open Menu</ion-button>
+
     </ion-content>
   </div>
 </ion-app>

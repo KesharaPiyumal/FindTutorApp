@@ -4,6 +4,7 @@ import { LocationPickerComponent } from './location-picker/location-picker.compo
 import {NbButtonModule, NbFormFieldModule, NbIconModule, NbInputModule} from '@nebular/theme';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AgmCoreModule } from '@agm/core';
+import config from '../../fireBaseConfig';
 
 @NgModule({
   declarations: [LocationPickerComponent],
@@ -13,7 +14,7 @@ import { AgmCoreModule } from '@agm/core';
         NbIconModule,
         NbInputModule,
         AgmCoreModule.forRoot({
-            apiKey: '',
+            apiKey: config.apiKey,
             libraries: ['places']
         }),
         NbButtonModule,
