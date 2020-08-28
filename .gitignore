@@ -30,3 +30,6 @@ npm-debug.log*
 /plugins
 /www
 /src/app/fireBaseConfig.ts
+/resources/ios/
+/resources/android/
+/resources/README.md
