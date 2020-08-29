@@ -12,7 +12,7 @@ import FireBaseConfig from './fireBaseConfig';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { NbThemeModule, NbLayoutModule, NbToastrModule } from '@nebular/theme';
+import {NbThemeModule, NbLayoutModule, NbToastrModule, NbMenuModule} from '@nebular/theme';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HttpClientModule } from '@angular/common/http';
@@ -33,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     NbToastrModule.forRoot(),
     NbLayoutModule,
     NbEvaIconsModule,
+    NbMenuModule.forRoot(),
   ],
   providers: [StatusBar, SplashScreen, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

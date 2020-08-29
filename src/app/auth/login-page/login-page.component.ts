@@ -60,6 +60,9 @@ export class LoginPageComponent implements OnInit {
               Settings.userId = decodeToken.userId;
               Settings.email = decodeToken.email;
               Settings.displayName = decodeToken.displayName;
+              Object.assign(decodeToken, {
+                type: response.data.type,
+              });
               localStorage.setItem('currentUser', JSON.stringify(decodeToken));
               this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
               this.router.navigate(['home/']).then((r) => {});

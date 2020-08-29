@@ -43,12 +43,22 @@
         </ion-buttons>
         <ion-title>Home</ion-title>
         <ion-buttons slot="end">
-          <ion-button shape="round" (click)="menuPopUpControl()"><ion-icon name="ellipsis-vertical-outline"></ion-icon></ion-button>
+          <ion-button shape="round" [nbContextMenu]="items" nbContextMenuTag="context-menu" (click)="menuPopUpControl()"
+            ><ion-icon name="ellipsis-vertical-outline"></ion-icon
+          ></ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-
+      <div class="w-100">
+        <nb-card accent="primary">
+          <nb-card-header class="p-2">
+            <div class="w-100 d-flex flex-row">
+              <img style="width: 13%" src="../../assets/images/user.png" alt="" />
+            </div>
+          </nb-card-header>
+        </nb-card>
+      </div>
     </ion-content>
   </div>
 </ion-app>
