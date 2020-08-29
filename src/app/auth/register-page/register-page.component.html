@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" [nbSpinner]="examsLoading || subjectsLoading" nbSpinnerStatus="info">
+<ion-content [fullscreen]="true" [nbSpinner]="examsLoading || subjectsLoading || userLoading" nbSpinnerStatus="info">
   <div class="d-flex w-100 flex-column pt-5">
     <div class="d-flex justify-content-center">
       <img style="width: 20%;" alt="" src="../../../assets/icon.png" />
@@ -33,7 +33,7 @@
                     type="text"
                     placeholder="First Name"
                     formControlName="firstName"
-                    [status]="firstName.touched ? (firstName.invalid ? 'danger' : 'success') : 'basic'"
+                    [status]="firstName.touched ? (firstName.invalid ? 'danger' : 'primary') : 'basic'"
                   />
                 </nb-form-field>
                 <ng-container *ngIf="firstName.invalid && firstName.touched">
@@ -55,7 +55,7 @@
                     type="text"
                     placeholder="Last Name"
                     formControlName="lastName"
-                    [status]="lastName.touched ? (lastName.invalid ? 'danger' : 'success') : 'basic'"
+                    [status]="lastName.touched ? (lastName.invalid ? 'danger' : 'primary') : 'basic'"
                   />
                 </nb-form-field>
                 <ng-container *ngIf="lastName.invalid && lastName.touched">
@@ -75,7 +75,7 @@
                 type="email"
                 placeholder="Email"
                 formControlName="email"
-                [status]="email.touched ? (email.invalid ? 'danger' : 'success') : 'basic'"
+                [status]="email.touched ? (email.invalid ? 'danger' : 'primary') : 'basic'"
               />
             </nb-form-field>
             <ng-container *ngIf="email.invalid && email.touched">
@@ -93,7 +93,7 @@
                 fullWidth
                 placeholder="Password"
                 formControlName="password"
-                [status]="password.touched ? (password.invalid ? 'danger' : 'success') : 'basic'"
+                [status]="password.touched ? (password.invalid ? 'danger' : 'primary') : 'basic'"
               />
             </nb-form-field>
             <ng-container *ngIf="password.invalid && password.touched">
@@ -115,7 +115,7 @@
                   confirmPassword.touched
                     ? confirmPassword.invalid || password.value != confirmPassword.value
                       ? 'danger'
-                      : 'success'
+                      : 'primary'
                     : 'basic'
                 "
                 [attr.aria-invalid]="confirmPassword.invalid && confirmPassword.touched ? true : null"
@@ -139,7 +139,7 @@
                 type="number"
                 placeholder="Mobile Number"
                 formControlName="phoneNumber"
-                [status]="phoneNumber.touched ? (phoneNumber.invalid ? 'danger' : 'success') : 'basic'"
+                [status]="phoneNumber.touched ? (phoneNumber.invalid ? 'danger' : 'primary') : 'basic'"
               />
             </nb-form-field>
             <ng-container *ngIf="phoneNumber.invalid && phoneNumber.touched">
@@ -155,6 +155,23 @@
       </nb-step>
       <nb-step class="p-0" [stepControl]="registerFormAdv">
         <form [formGroup]="registerFormAdv" class="w-100 d-flex flex-column pt-2 pb-2">
+          <div class="d-flex flex-column mb-2" *ngIf="type.value === UserType.Tutor">
+            <input
+              nbInput
+              formControlName="age"
+              type="number"
+              placeholder="Age"
+              fullWidth
+              fieldSize="medium"
+              [status]="age.touched ? (age.invalid ? 'danger' : 'primary') : 'basic'"
+              [attr.aria-invalid]="age.invalid && age.touched ? true : null"
+            />
+            <ng-container *ngIf="age.invalid && age.touched">
+              <span class="caption-danger" *ngIf="age.errors?.required">
+                required!
+              </span>
+            </ng-container>
+          </div>
           <div class="d-flex flex-column mb-2">
             <textarea
               nbInput
@@ -164,7 +181,7 @@
               placeholder="Address"
               fullWidth
               fieldSize="medium"
-              [status]="address.touched ? (address.invalid ? 'danger' : 'success') : 'basic'"
+              [status]="address.touched ? (address.invalid ? 'danger' : 'primary') : 'basic'"
               [attr.aria-invalid]="address.invalid && address.touched ? true : null"
             ></textarea>
             <ng-container *ngIf="address.invalid && address.touched">
@@ -173,30 +190,45 @@
               </span>
             </ng-container>
           </div>
-          <div class="w-100 d-flex flex-row align-items-center mb-2">
-            <div style="width: calc(100vw - 76px);" class="mr-1 disabled-gl">
-              <input nbInput placeholder="Your Location" formControlName="location" fullWidth fieldSize="medium" />
-            </div>
-            <button
-              nbButton
-              size="medium"
-              status="primary"
-              (click)="getCurrentLocation()"
-              [nbPopover]="locationPopoverTemplateRef"
-              nbPopoverTrigger="noop"
-              nbPopoverPlacement="bottom"
-              nbPopoverContext="locationPopover"
-            >
-              <nb-icon pack="eva" icon="pin-outline"></nb-icon>
-            </button>
-            <ng-template #locationPopoverTemplateRef>
-              <div class="popover-location d-flex flex-column">
-                <div class="pop-top"></div>
-                <div class="p-2 d-flex justify-content-center align-items-center" style="height: 3.5rem;">
-                  <span style="font-size: 13px;">Click here to pick your location!</span>
-                </div>
+          <div class="d-flex flex-column mb-2 w-100">
+            <div class="w-100 d-flex flex-row align-items-center">
+              <div style="width: calc(100vw - 76px);" class="mr-1 disabled-gl">
+                <input
+                  nbInput
+                  placeholder="Your Location"
+                  formControlName="location"
+                  fullWidth
+                  fieldSize="medium"
+                  [status]="location.touched ? (location.invalid ? 'danger' : 'primary') : 'basic'"
+                  [attr.aria-invalid]="location.invalid && location.touched ? true : null"
+                />
               </div>
-            </ng-template>
+              <button
+                nbButton
+                size="medium"
+                status="primary"
+                (click)="getCurrentLocation()"
+                [nbPopover]="locationPopoverTemplateRef"
+                nbPopoverTrigger="noop"
+                nbPopoverPlacement="bottom"
+                nbPopoverContext="locationPopover"
+              >
+                <nb-icon pack="eva" icon="pin-outline"></nb-icon>
+              </button>
+              <ng-template #locationPopoverTemplateRef>
+                <div class="popover-location d-flex flex-column">
+                  <div class="pop-top"></div>
+                  <div class="p-2 d-flex justify-content-center align-items-center" style="height: 3.5rem;">
+                    <span style="font-size: 13px;">Click here to pick your location!</span>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <ng-container *ngIf="location.invalid && location.touched">
+              <span class="caption-danger" *ngIf="location.errors?.required">
+                required!
+              </span>
+            </ng-container>
           </div>
           <div class="row" *ngIf="type.value === UserType.Tutor">
             <div class="col-md-12 mb-2">
@@ -204,27 +236,54 @@
                 placeholder="Examination"
                 formControlName="examId"
                 fullWidth
+                [status]="examId.touched ? (examId.invalid ? 'danger' : 'primary') : 'basic'"
+                [attr.aria-invalid]="examId.invalid && examId.touched ? true : null"
                 class="d-flex flex-row align-items-center"
                 (ngModelChange)="examinationOrGradeChange($event)"
               >
                 <nb-option *ngFor="let exam of examsDropdown" [value]="exam['value']">{{ exam['label'] }}</nb-option>
               </nb-select>
+              <ng-container *ngIf="examId.invalid && examId.touched">
+                <span class="caption-danger" *ngIf="examId.errors?.required">
+                  required!
+                </span>
+              </ng-container>
             </div>
             <div class="col-md-12 mb-2">
               <nb-select
                 placeholder="Medium"
                 formControlName="mediumId"
                 fullWidth
+                [status]="mediumId.touched ? (mediumId.invalid ? 'danger' : 'primary') : 'basic'"
+                [attr.aria-invalid]="mediumId.invalid && mediumId.touched ? true : null"
                 class="d-flex flex-row align-items-center"
                 (ngModelChange)="mediumChange($event)"
               >
                 <nb-option *ngFor="let medium of mediumDropdown" [value]="medium['value']">{{ medium['label'] }}</nb-option>
               </nb-select>
+              <ng-container *ngIf="mediumId.invalid && mediumId.touched">
+                <span class="caption-danger" *ngIf="mediumId.errors?.required">
+                  required!
+                </span>
+              </ng-container>
             </div>
             <div class="col-md-12">
-              <nb-select placeholder="Subjects" formControlName="subjectIds" multiple fullWidth class="d-flex flex-row align-items-center">
+              <nb-select
+                placeholder="Subjects"
+                formControlName="subjectIds"
+                multiple
+                fullWidth
+                [status]="subjectIds.touched ? (subjectIds.invalid ? 'danger' : 'primary') : 'basic'"
+                [attr.aria-invalid]="subjectIds.invalid && subjectIds.touched ? true : null"
+                class="d-flex flex-row align-items-center"
+              >
                 <nb-option *ngFor="let subject of subjectsDropdown" [value]="subject['value']">{{ subject['label'] }}</nb-option>
               </nb-select>
+              <ng-container *ngIf="subjectIds.invalid && subjectIds.touched">
+                <span class="caption-danger" *ngIf="subjectIds.errors?.required">
+                  required!
+                </span>
+              </ng-container>
             </div>
           </div>
         </form>

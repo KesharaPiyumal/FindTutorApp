@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Tutor, User } from '../user';
+import {Student, Tutor, User} from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -64,11 +64,11 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
     });
     this.registerFormAdv = this.formBuilder.group({
       address: ['', Validators.required],
+      location: ['', Validators.required],
       age: [],
       examId: [],
       mediumId: [],
       subjectIds: [[]],
-      location: ['', Validators.required],
     });
   }
 
@@ -97,6 +97,9 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   }
   get address() {
     return this.registerFormAdv.get('address');
+  }
+  get age() {
+    return this.registerFormAdv.get('age');
   }
   get examId() {
     return this.registerFormAdv.get('examId');
@@ -165,27 +168,29 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   }
 
   setControlsForType(event: any) {
+    const ageC = this.age;
+    const mediumIdC = this.mediumId;
+    const subjectIdsC = this.subjectIds;
+    const examIdC = this.examId;
+    ageC.reset();
+    mediumIdC.reset();
+    examIdC.reset();
+    subjectIdsC.reset();
     if (event === UserType.Tutor) {
-      if (this.registerFormAdv.get('examId') === null) {
-        this.registerFormAdv.addControl('examId', new FormControl(null, Validators.required));
-      }
-      if (this.registerFormAdv.get('subjectIds') === null) {
-        this.registerFormAdv.addControl('subjectIds', new FormControl([], Validators.required));
-      }
-      if (this.registerFormAdv.get('mediumId') === null) {
-        this.registerFormAdv.addControl('mediumId', new FormControl(null, Validators.required));
-      }
+      ageC.setValidators(Validators.required);
+      mediumIdC.setValidators(Validators.required);
+      examIdC.setValidators(Validators.required);
+      subjectIdsC.setValidators(Validators.required);
     } else {
-      if (this.registerFormAdv.get('examId')) {
-        this.registerFormAdv.removeControl('examId');
-      }
-      if (this.registerFormAdv.get('subjectIds')) {
-        this.registerFormAdv.removeControl('subjectIds');
-      }
-      if (this.registerFormAdv.get('mediumId')) {
-        this.registerFormAdv.removeControl('mediumId');
-      }
+      ageC.clearValidators();
+      mediumIdC.clearValidators();
+      examIdC.clearValidators();
+      subjectIdsC.clearValidators();
     }
+    ageC.updateValueAndValidity();
+    mediumIdC.updateValueAndValidity();
+    examIdC.updateValueAndValidity();
+    subjectIdsC.updateValueAndValidity();
   }
 
   async getCurrentLocation() {
@@ -229,31 +234,61 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   }
 
   registerUser() {
+    if (this.registerFormAdv.invalid) {
+      this.formValidationHelperService.validateAllFormFields(this.registerFormAdv);
+      return;
+    }
     this.userLoading = true;
-    const tutor: Tutor = {
-      address: this.address.value,
-      email: this.email.value,
-      examId: this.examId.value,
-      firstName: this.firstName.value,
-      lastName: this.lastName.value,
-      lat: this.lat.toString(),
-      lon: this.lon.toString(),
-      mediumId: this.mediumId.value,
-      mobileNumber: this.phoneNumber.value.toString(),
-      password: this.password.value,
-      subjectIds: this.subjectIds.value,
-    };
-    this.essentialDataService.registerTutor(tutor).subscribe(
-      (response) => {
-        this.userLoading = false;
-        if (response.statusCode === StatusCodes.Success) {
-          this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
-          this.router.navigate(['auth/login']).then((r) => {});
-        }
-      },
-      (error) => {
-        this.userLoading = false;
-      }
-    );
+    if(this.type.value === UserType.Tutor){
+      const tutor: Tutor = {
+        address: this.address.value,
+        age: this.age.value,
+        email: this.email.value,
+        examId: this.examId.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        lat: this.lat.toString(),
+        lon: this.lon.toString(),
+        mediumId: this.mediumId.value,
+        mobileNumber: this.phoneNumber.value.toString(),
+        password: this.password.value,
+        subjectIds: this.subjectIds.value,
+      };
+      this.essentialDataService.registerTutor(tutor).subscribe(
+          (response) => {
+            this.userLoading = false;
+            if (response.statusCode === StatusCodes.Success) {
+              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+              this.router.navigate(['auth/login']).then((r) => {});
+            }
+          },
+          (error) => {
+            this.userLoading = false;
+          }
+      );
+    }else{
+      const student: Student = {
+        address: this.address.value,
+        email: this.email.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        lat: this.lat.toString(),
+        lon: this.lon.toString(),
+        mobileNumber: this.phoneNumber.value.toString(),
+        password: this.password.value,
+      };
+      this.essentialDataService.registerStudent(student).subscribe(
+          (response) => {
+            this.userLoading = false;
+            if (response.statusCode === StatusCodes.Success) {
+              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+              this.router.navigate(['auth/login']).then((r) => {});
+            }
+          },
+          (error) => {
+            this.userLoading = false;
+          }
+      );
+    }
   }
 }

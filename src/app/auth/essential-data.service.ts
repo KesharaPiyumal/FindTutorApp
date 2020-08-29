@@ -7,9 +7,10 @@ import { map } from 'rxjs/operators';
 })
 export class EssentialDataService {
   examsUrl = 'exam';
-  // mediumsUrl = 'medium';
   subjectsUrl = 'subject';
   tutorUrl = 'tutor';
+  studentUrl = 'student';
+  userUrl = 'user';
   constructor(public commonHttpService: CommonHttpService) {}
 
   getAllExams() {
@@ -36,16 +37,24 @@ export class EssentialDataService {
     );
   }
 
-  tutorLogin(tutorData) {
-    return this.commonHttpService.postData(this.tutorUrl + '/login', tutorData).pipe(
+  registerStudent(studentData) {
+    return this.commonHttpService.postData(this.studentUrl + '/register', studentData).pipe(
       map((data) => {
         return data;
       })
     );
   }
 
-  tutorVerify(token) {
-    return this.commonHttpService.postData(this.tutorUrl + '/verify', token).pipe(
+  userLogin(tutorData) {
+    return this.commonHttpService.postData(this.userUrl + '/login', tutorData).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  userVerify(token) {
+    return this.commonHttpService.postData(this.userUrl + '/verify', token).pipe(
       map((data) => {
         return data;
       })

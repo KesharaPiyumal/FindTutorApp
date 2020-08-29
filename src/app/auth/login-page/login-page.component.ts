@@ -50,7 +50,7 @@ export class LoginPageComponent implements OnInit {
         user.email = this.email.value;
         user.password = this.password.value;
         this.loading = true;
-        this.essentialDataService.tutorLogin({ email: user.email, password: user.password }).subscribe(
+        this.essentialDataService.userLogin({ email: user.email, password: user.password }).subscribe(
           (response) => {
             this.loading = false;
             if (response.statusCode === StatusCodes.Success) {
