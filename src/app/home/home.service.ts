@@ -16,4 +16,12 @@ export class HomeService {
       })
     );
   }
+
+  geAllFilteredTutors(latLng) {
+    return this.commonHttpService.postData(this.tutorUrl + '/filteredAll', latLng).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
 }

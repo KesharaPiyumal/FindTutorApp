@@ -1,0 +1,52 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <div class="d-flex flex-row align-items-center ml-2">
+      <nb-icon style="font-size: 24px;" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
+      <span style="font-size: 16px;">Filter By</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen [nbSpinner]="examsLoading || subjectsLoading" nbSpinnerStatus="info">
+  <div class="p-3">
+    <form [formGroup]="filterForm">
+      <div class="row">
+        <div class="col-md-12 mb-2">
+          <nb-select
+            placeholder="Examination"
+            formControlName="examId"
+            fullWidth
+            class="d-flex flex-row align-items-center"
+            (ngModelChange)="examinationOrGradeChange($event)"
+          >
+            <nb-option *ngFor="let exam of examsDropdown" [value]="exam['value']">{{ exam['label'] }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-12 mb-2">
+          <nb-select
+            placeholder="Medium"
+            formControlName="mediumId"
+            fullWidth
+            class="d-flex flex-row align-items-center"
+            (ngModelChange)="mediumChange($event)"
+          >
+            <nb-option *ngFor="let medium of mediumDropdown" [value]="medium['value']">{{ medium['label'] }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-12 mb-2">
+          <nb-select placeholder="Subjects" formControlName="subjectIds" multiple fullWidth class="d-flex flex-row align-items-center">
+            <nb-option *ngFor="let subject of subjectsDropdown" [value]="subject['value']">{{ subject['label'] }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="col-md-12">
+          <label class="label">Distance From Your Resident (km) :</label>
+          <div class="d-flex flex-row">
+            <input fullWidth nbInput status="primary" formControlName="distanceRange" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="d-flex justify-content-end mt-2">
+      <button nbButton status="primary" outline><fa-icon class="mr-1" icon="chevron-left"></fa-icon>OK</button>
+    </div>
+  </div>
+</ion-content>

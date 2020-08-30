@@ -5,6 +5,7 @@ import {NbButtonModule, NbFormFieldModule, NbIconModule, NbInputModule} from '@n
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AgmCoreModule } from '@agm/core';
 import config from '../../fireBaseConfig';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [LocationPickerComponent],
@@ -18,6 +19,7 @@ import config from '../../fireBaseConfig';
             libraries: ['places']
         }),
         NbButtonModule,
+        HttpClientModule
     ],
   exports: [LocationPickerComponent],
   providers: [Geolocation],

@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, Vie
 import { MapsAPILoader } from '@agm/core';
 import { Location } from '../entity/Location';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import config from '../../../fireBaseConfig';
+import { HttpClient } from '@angular/common/http';
 
 declare var google;
 const INITIAL_LATITUDE = 6.924541605015639;
@@ -28,7 +30,7 @@ export class LocationPickerComponent implements OnInit {
     this.initialSearch = searchedLocation.initialSearch;
   }
 
-  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private geolocation: Geolocation) {}
+  constructor(private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private geolocation: Geolocation, private http: HttpClient) {}
 
   ngOnInit() {
     this.mapsAPILoader.load().then(() => {
@@ -70,23 +72,36 @@ export class LocationPickerComponent implements OnInit {
   }
 
   getCurrentLocation(bool) {
-    this.geolocation
-      .getCurrentPosition()
-      .then((resp) => {
-        this.searchedLocation = {
-          initialSearch: bool,
-          latitude: resp.coords.latitude,
-          longitude: resp.coords.longitude,
-        };
-      })
-      .catch((error) => {
-        console.log('Error getting location', error);
-        this.searchedLocation = {
-          initialSearch: bool,
-          latitude: INITIAL_LATITUDE,
-          longitude: INITIAL_LONGITUDE,
-        };
-      });
+    if (bool) {
+      this.searchedLocation = {
+        initialSearch: bool,
+        latitude: INITIAL_LATITUDE,
+        longitude: INITIAL_LONGITUDE,
+      };
+    } else {
+      this.http
+        .post('https://www.googleapis.com/geolocation/v1/geolocate?key=' + config.apiKey, {}, {})
+        .pipe()
+        .subscribe(
+          (response) => {
+            this.searchedLocation = {
+              initialSearch: bool,
+              latitude: response['location'].lat,
+              longitude: response['location'].lng,
+            };
+          },
+          (err) => {}
+        );
+    }
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.watchPosition((position) => {
+    //     this.searchedLocation = {
+    //       initialSearch: bool,
+    //       latitude: position.coords.latitude,
+    //       longitude: position.coords.longitude,
+    //     };
+    //   });
+    // }
   }
 
   clearSearch() {

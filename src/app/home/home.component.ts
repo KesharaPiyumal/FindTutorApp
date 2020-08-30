@@ -8,6 +8,7 @@ import { HomeService } from './home.service';
 import { Router } from '@angular/router';
 import { ModalLocationPageComponent } from '../auth/register-page/modal-location-page/modal-location-page.component';
 import { ProfileModalPageComponent } from './profile-modal-page/profile-modal-page.component';
+import { FilterModalPageComponent } from './filter-modal-page/filter-modal-page.component';
 
 @Component({
   selector: 'app-home',
@@ -122,20 +123,38 @@ export class HomeComponent implements OnInit {
   }
 
   getAllTutors() {
-    this.homeService.geAllTutors().subscribe(
-      (response) => {
-        this.tutorList = response.data;
-        this.tutorList.forEach((tutor) => {
-          this.getDataFromAPI(tutor);
-        });
-      },
-      (error) => {}
-    );
+    let user;
+    if (localStorage.getItem('currentUser')) {
+      user = JSON.parse(localStorage.getItem('currentUser'));
+    }
+    const examId = null;
+    const mediumId = null;
+    const subjectIds = [];
+    this.homeService
+      .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange: 10, examId, mediumId, subjectIds })
+      .subscribe(
+        (response) => {
+          this.tutorList = response.data;
+          this.tutorList.forEach((tutor) => {
+            // this.getDataFromAPI(tutor);
+          });
+        },
+        (error) => {}
+      );
   }
 
   async openProfileModal() {
     const modal = await this.modalController.create({
       component: ProfileModalPageComponent,
+      cssClass: 'my-custom-class',
+    });
+    await modal.present();
+    const modalData = await modal.onWillDismiss();
+  }
+
+  async openFilterModal() {
+    const modal = await this.modalController.create({
+      component: FilterModalPageComponent,
       cssClass: 'my-custom-class',
     });
     await modal.present();
