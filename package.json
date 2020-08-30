@@ -27,9 +27,16 @@
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
+    "@fortawesome/angular-fontawesome": "^0.7.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-brands-svg-icons": "^5.14.0",
+    "@fortawesome/free-regular-svg-icons": "^5.14.0",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@ionic-native/core": "^5.0.7",
     "@ionic-native/diagnostic": "^5.27.0",
     "@ionic-native/geolocation": "^5.27.0",
+    "@ionic-native/http": "^5.28.0",
+    "@ionic-native/native-geocoder": "^5.28.0",
     "@ionic-native/spinner-dialog": "^5.27.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
@@ -38,10 +45,16 @@
     "@nebular/theme": "^6.0.0",
     "bootstrap": "^4.5.0",
     "cordova-android": "8.1.0",
+    "cordova-browser": "^6.0.0",
+    "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-advanced-http": "^3.0.1",
     "cordova-plugin-androidx": "^2.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
+    "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-http": "^1.2.0",
     "cordova-plugin-native-spinner": "^1.1.3",
+    "cordova-plugin-nativegeocoder": "^3.4.1",
     "cordova.plugins.diagnostic": "^6.0.2",
     "core-js": "^2.5.4",
     "eva-icons": "^1.1.1",
@@ -103,10 +116,14 @@
       "cordova-plugin-geolocation": {},
       "cordova.plugins.diagnostic": {},
       "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {}
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-nativegeocoder": {},
+      "cordova-plugin-advanced-http": {},
+      "cordova-plugin-http": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

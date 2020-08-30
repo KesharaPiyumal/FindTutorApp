@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, Platform } from '@ionic/angular';
+import { MenuController, ModalController } from '@ionic/angular';
 import { NbMenuService } from '@nebular/theme';
 import { filter, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import config from '../fireBaseConfig';
+import { HomeService } from './home.service';
+import { Router } from '@angular/router';
+import { ModalLocationPageComponent } from '../auth/register-page/modal-location-page/modal-location-page.component';
+import { ProfileModalPageComponent } from './profile-modal-page/profile-modal-page.component';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +59,16 @@ export class HomeComponent implements OnInit {
     { title: 'Profile', icon: 'person-outline', data: 1 },
     { title: 'Log out', icon: 'log-out-outline', data: 2 },
   ];
-  constructor(private menu: MenuController, private nbMenuService: NbMenuService) {
+  address;
+  tutorList = [];
+  constructor(
+    private menu: MenuController,
+    private nbMenuService: NbMenuService,
+    private http: HttpClient,
+    public homeService: HomeService,
+    public router: Router,
+    public modalController: ModalController
+  ) {
     if (localStorage.getItem('currentUser')) {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     }
@@ -65,6 +80,7 @@ export class HomeComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex((page) => page.title.toLowerCase() === path.toLowerCase());
     }
+    this.getAllTutors();
   }
 
   menuItemClicked() {
@@ -76,13 +92,54 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((dataId) => {
         if (dataId === 1) {
-          console.log('Profile ');
+          this.openProfileModal().then((r) => {});
+        } else if (dataId === 2) {
+          if (localStorage.getItem('currentUser')) {
+            localStorage.removeItem('currentUser');
+          }
+          this.router.navigate(['auth/login']).then((r) => {});
         }
       });
   }
 
   async openMenu() {
     await this.menu.open();
+  }
+
+  getDataFromAPI(tutor) {
+    this.http
+      .get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + tutor.latitude + ',' + tutor.longitude + '&key=' + config.apiKey)
+      .pipe()
+      .subscribe(
+        (data) => {
+          Object.assign(tutor, {
+            geoCordAddress:
+              data['results'][0].address_components[1]['short_name'] + ' ' + data['results'][0].address_components[2]['short_name'],
+          });
+        },
+        (err) => {}
+      );
+  }
+
+  getAllTutors() {
+    this.homeService.geAllTutors().subscribe(
+      (response) => {
+        this.tutorList = response.data;
+        this.tutorList.forEach((tutor) => {
+          this.getDataFromAPI(tutor);
+        });
+      },
+      (error) => {}
+    );
+  }
+
+  async openProfileModal() {
+    const modal = await this.modalController.create({
+      component: ProfileModalPageComponent,
+      cssClass: 'my-custom-class',
+    });
+    await modal.present();
+    const modalData = await modal.onWillDismiss();
   }
 
   menuPopUpControl() {}

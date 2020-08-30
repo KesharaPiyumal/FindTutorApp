@@ -52,7 +52,6 @@ export class CommonHttpService {
         })
       );
   }
-
   postData(subUrl: string, data: any) {
     return this.http
       .post<any>(environment.baseUrl + subUrl, data, { headers: this.getHttpHeaders() })

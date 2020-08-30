@@ -20,7 +20,6 @@ import {
   NbSpinnerModule,
   NbStepperModule,
   NbToastrModule,
-  NbToastrService,
 } from '@nebular/theme';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
