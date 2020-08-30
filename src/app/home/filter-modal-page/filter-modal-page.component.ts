@@ -39,11 +39,35 @@ export class FilterModalPageComponent implements OnInit {
     this.getAllExams();
   }
 
+  get examId() {
+    return this.filterForm.get('examId');
+  }
+
+  get subjectIds() {
+    return this.filterForm.get('subjectIds');
+  }
+  get mediumId() {
+    return this.filterForm.get('mediumId');
+  }
+  get distanceRange() {
+    return this.filterForm.get('distanceRange');
+  }
+
   dismissModal(bool?) {
     if (bool) {
-      this.modalController.dismiss({}, 'set').then((r) => {});
+      this.modalController
+        .dismiss(
+          {
+            examId: this.examId.value,
+            subjectIds: this.subjectIds.value,
+            mediumId: this.mediumId.value,
+            distanceRange: this.distanceRange.value,
+          },
+          'set'
+        )
+        .then((r) => {});
     } else {
-      this.modalController.dismiss({}, 'cancel').then((r) => {});
+      this.modalController.dismiss(null, 'cancel').then((r) => {});
     }
   }
 

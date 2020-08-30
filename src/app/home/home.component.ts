@@ -122,16 +122,13 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  getAllTutors() {
+  getAllTutors(examId?, mediumId?, subjectIds?, distanceRange?) {
     let user;
     if (localStorage.getItem('currentUser')) {
       user = JSON.parse(localStorage.getItem('currentUser'));
     }
-    const examId = null;
-    const mediumId = null;
-    const subjectIds = [];
     this.homeService
-      .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange: 10, examId, mediumId, subjectIds })
+      .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange, examId, mediumId, subjectIds })
       .subscribe(
         (response) => {
           this.tutorList = response.data;
@@ -159,6 +156,14 @@ export class HomeComponent implements OnInit {
     });
     await modal.present();
     const modalData = await modal.onWillDismiss();
+    if (modalData.data !== null) {
+      this.getAllTutors(
+        modalData.data['examId'],
+        modalData.data['mediumId'],
+        modalData.data['subjectIds'],
+        modalData.data['distanceRange'] === 0 ? null : modalData.data['distanceRange']
+      );
+    }
   }
 
   menuPopUpControl() {}
