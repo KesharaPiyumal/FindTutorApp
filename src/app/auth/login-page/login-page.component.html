@@ -22,7 +22,7 @@
                 type="email"
                 placeholder="Email"
                 formControlName="email"
-                [status]="email.touched ? (email.invalid ? 'danger' : 'success') : 'basic'"
+                [status]="email.touched ? (email.invalid ? 'danger' : 'primary') : 'basic'"
               />
             </nb-form-field>
             <ng-container *ngIf="email.invalid && email.touched">
@@ -40,7 +40,7 @@
                 fullWidth
                 placeholder="Password"
                 formControlName="password"
-                [status]="password.touched ? (password.invalid ? 'danger' : 'success') : 'basic'"
+                [status]="password.touched ? (password.invalid ? 'danger' : 'primary') : 'basic'"
               />
             </nb-form-field>
             <ng-container *ngIf="password.invalid && password.touched">

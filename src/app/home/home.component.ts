@@ -60,8 +60,8 @@ export class HomeComponent implements OnInit {
     { title: 'Profile', icon: 'person-outline', data: 1 },
     { title: 'Log out', icon: 'log-out-outline', data: 2 },
   ];
-  address;
   tutorList = [];
+  tutorLoading = false;
   constructor(
     private menu: MenuController,
     private nbMenuService: NbMenuService,
@@ -127,16 +127,20 @@ export class HomeComponent implements OnInit {
     if (localStorage.getItem('currentUser')) {
       user = JSON.parse(localStorage.getItem('currentUser'));
     }
+    this.tutorLoading = true;
     this.homeService
       .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange, examId, mediumId, subjectIds })
       .subscribe(
         (response) => {
+          this.tutorLoading = false;
           this.tutorList = response.data;
           this.tutorList.forEach((tutor) => {
             // this.getDataFromAPI(tutor);
           });
         },
-        (error) => {}
+        (error) => {
+          this.tutorLoading = false;
+        }
       );
   }
 
