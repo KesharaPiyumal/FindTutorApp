@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {Student, Tutor, User} from '../user';
+import { Student, Tutor, User } from '../user';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -28,6 +28,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   mediumDropdown = [
     { label: 'Sinhala', value: 1 },
     { label: 'English', value: 2 },
+    { label: 'No Medium', value: 3 },
   ];
   subjectsDropdown = [];
   examsLoading = false;
@@ -239,7 +240,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
       return;
     }
     this.userLoading = true;
-    if(this.type.value === UserType.Tutor){
+    if (this.type.value === UserType.Tutor) {
       const tutor: Tutor = {
         address: this.address.value,
         age: this.age.value,
@@ -255,18 +256,18 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         subjectIds: this.subjectIds.value,
       };
       this.essentialDataService.registerTutor(tutor).subscribe(
-          (response) => {
-            this.userLoading = false;
-            if (response.statusCode === StatusCodes.Success) {
-              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
-              this.router.navigate(['auth/login']).then((r) => {});
-            }
-          },
-          (error) => {
-            this.userLoading = false;
+        (response) => {
+          this.userLoading = false;
+          if (response.statusCode === StatusCodes.Success) {
+            this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+            this.router.navigate(['auth/login']).then((r) => {});
           }
+        },
+        (error) => {
+          this.userLoading = false;
+        }
       );
-    }else{
+    } else {
       const student: Student = {
         address: this.address.value,
         email: this.email.value,
@@ -278,16 +279,16 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
         password: this.password.value,
       };
       this.essentialDataService.registerStudent(student).subscribe(
-          (response) => {
-            this.userLoading = false;
-            if (response.statusCode === StatusCodes.Success) {
-              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
-              this.router.navigate(['auth/login']).then((r) => {});
-            }
-          },
-          (error) => {
-            this.userLoading = false;
+        (response) => {
+          this.userLoading = false;
+          if (response.statusCode === StatusCodes.Success) {
+            this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+            this.router.navigate(['auth/login']).then((r) => {});
           }
+        },
+        (error) => {
+          this.userLoading = false;
+        }
       );
     }
   }

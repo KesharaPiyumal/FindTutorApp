@@ -44,15 +44,20 @@
         <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
         <ion-buttons slot="end">
           <ion-button shape="round" [nbContextMenu]="items" nbContextMenuTag="context-menu" (click)="menuPopUpControl()"
-            ><fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon
+            ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
+              <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
           ></ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding" [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
       <div class="w-100 d-flex justify-content-end mb-1">
-        <button nbButton outline status="primary" size="small" class="ml-1" (click)="openFilterModal()"><fa-icon class="mr-1" icon="filter"></fa-icon>Filter By</button>
-        <button nbButton outline status="primary" size="small" class="ml-1"><fa-icon icon="sync"></fa-icon></button>
+        <button nbButton outline status="primary" size="small" class="ml-1" (click)="openFilterModal()">
+          <fa-icon class="mr-1" icon="filter"></fa-icon>Filter By
+        </button>
+        <button nbButton outline status="primary" size="small" class="ml-1" (click)="getAllTutors()">
+          <fa-icon icon="sync"></fa-icon>
+        </button>
       </div>
       <div class="w-100">
         <nb-card accent="primary" *ngFor="let tutor of tutorList; let i = index" class="mb-2">

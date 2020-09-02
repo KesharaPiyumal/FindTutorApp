@@ -15,6 +15,7 @@ export class FilterModalPageComponent implements OnInit {
   mediumDropdown = [
     { label: 'Sinhala', value: 1 },
     { label: 'English', value: 2 },
+    { label: 'No Medium', value: 3 },
   ];
   subjectsDropdown = [];
   examsLoading = false;
@@ -33,7 +34,7 @@ export class FilterModalPageComponent implements OnInit {
     this.filterForm = this.formBuilder.group({
       examId: [null],
       mediumId: [null],
-      subjectIds: [[]],
+      subjectIds: [],
       distanceRange: [0],
     });
     this.getAllExams();
@@ -55,11 +56,19 @@ export class FilterModalPageComponent implements OnInit {
 
   dismissModal(bool?) {
     if (bool) {
+      let sIds = [];
+      if (this.subjectIds.value[0]['length'] === 0) {
+        sIds = [];
+      } else {
+        this.subjectIds.value.forEach((item) => {
+          sIds.push(item);
+        });
+      }
       this.modalController
         .dismiss(
           {
             examId: this.examId.value,
-            subjectIds: this.subjectIds.value,
+            subjectIds: sIds,
             mediumId: this.mediumId.value,
             distanceRange: this.distanceRange.value,
           },

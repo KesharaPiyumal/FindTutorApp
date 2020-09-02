@@ -18,4 +18,6 @@ export class ProfileModalPageComponent implements OnInit {
       this.modalController.dismiss({}, 'cancel').then((r) => {});
     }
   }
+
+  uploadFile(event: Event) {}
 }

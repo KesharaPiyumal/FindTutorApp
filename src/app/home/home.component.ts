@@ -165,7 +165,7 @@ export class HomeComponent implements OnInit {
         modalData.data['examId'],
         modalData.data['mediumId'],
         modalData.data['subjectIds'],
-        modalData.data['distanceRange'] === 0 ? null : modalData.data['distanceRange']
+        modalData.data['distanceRange'] === 0 ? null : +modalData.data['distanceRange']
       );
     }
   }

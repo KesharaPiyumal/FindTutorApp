@@ -1,10 +1,27 @@
 <ion-header translucent>
   <ion-toolbar>
     <div class="d-flex flex-row align-items-center ml-2">
-      <nb-icon style="font-size: 24px" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
-      <span style="font-size: 16px">Profile</span>
+      <nb-icon style="font-size: 24px;" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
+      <span style="font-size: 16px;">Profile</span>
     </div>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
+  <div class="d-flex justify-content-center mt-3">
+    <div style="position: relative;">
+      <fa-icon style="font-size: 125px; color: #d1d7e6;" icon="user-circle"></fa-icon>
+      <div class="camera-input">
+        <div class="d-flex justify-content-center align-items-center w-100 h-100">
+          <ion-buttons class="d-flex justify-content-center align-items-center">
+            <ion-button shape="round" (click)="fileInput.click()"><fa-icon style="color: black;" icon="camera"></fa-icon></ion-button>
+          </ion-buttons>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--input image file-->
+  <div style="display: none;">
+    <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)" />
+  </div>
 </ion-content>
