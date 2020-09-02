@@ -1,3 +1,15 @@
-<p>
-  view-tutor-profile works!
-</p>
+<ion-header translucent>
+  <ion-toolbar>
+    <div class="d-flex flex-row align-items-center ml-2">
+      <nb-icon style="font-size: 24px;" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
+      <span style="font-size: 16px;">{{ this.tutorData['firstName'] + ' ' + this.tutorData['lastName'] }}</span>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <div class="top-bg">
+    <div class="d-flex justify-content-center align-items-center pro-tutor">
+      <fa-icon class="pro-tutor-icon" icon="user-circle"></fa-icon>
+    </div>
+  </div>
+</ion-content>

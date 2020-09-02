@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ModalLocationPageComponent } from '../auth/register-page/modal-location-page/modal-location-page.component';
 import { ProfileModalPageComponent } from './profile-modal-page/profile-modal-page.component';
 import { FilterModalPageComponent } from './filter-modal-page/filter-modal-page.component';
+import { ViewTutorProfileComponent } from './view-tutor-profile/view-tutor-profile.component';
 
 @Component({
   selector: 'app-home',
@@ -147,7 +148,6 @@ export class HomeComponent implements OnInit {
   async openProfileModal() {
     const modal = await this.modalController.create({
       component: ProfileModalPageComponent,
-      cssClass: 'my-custom-class',
     });
     await modal.present();
     const modalData = await modal.onWillDismiss();
@@ -156,8 +156,6 @@ export class HomeComponent implements OnInit {
   async openFilterModal() {
     const modal = await this.modalController.create({
       component: FilterModalPageComponent,
-      cssClass: 'my-custom-class',
-      componentProps: { x: 1 },
     });
     await modal.present();
     const modalData = await modal.onWillDismiss();
@@ -168,6 +166,17 @@ export class HomeComponent implements OnInit {
         modalData.data['subjectIds'],
         modalData.data['distanceRange'] === 0 ? null : +modalData.data['distanceRange']
       );
+    }
+  }
+
+  async goToTutorProfile(tutorData: any) {
+    const modal = await this.modalController.create({
+      component: ViewTutorProfileComponent,
+      componentProps: { tutor: tutorData },
+    });
+    await modal.present();
+    const modalData = await modal.onWillDismiss();
+    if (modalData.data !== null) {
     }
   }
 
