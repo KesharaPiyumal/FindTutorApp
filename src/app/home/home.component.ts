@@ -157,6 +157,7 @@ export class HomeComponent implements OnInit {
     const modal = await this.modalController.create({
       component: FilterModalPageComponent,
       cssClass: 'my-custom-class',
+      componentProps: { x: 1 },
     });
     await modal.present();
     const modalData = await modal.onWillDismiss();

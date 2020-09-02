@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController} from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { StatusCodes } from '../../@common/enum';
 import { EssentialDataService } from '../../auth/essential-data.service';
