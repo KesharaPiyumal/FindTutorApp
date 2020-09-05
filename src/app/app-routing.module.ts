@@ -16,8 +16,12 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'home',
+    path: 'home-student',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'home-tutor',
+    loadChildren: () => import('./tutor-home/tutor-home.module').then((m) => m.TutorHomeModule),
   },
 ];
 

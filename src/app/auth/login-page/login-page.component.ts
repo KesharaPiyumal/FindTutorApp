@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { FormValidationHelperService } from '../../@common/helpers/form-validation-helper.service';
 import { ToastService } from '../../@common/services/toast.service';
 import { EssentialDataService } from '../essential-data.service';
-import { StatusCodes, ToastStatus } from '../../@common/enum';
+import { StatusCodes, ToastStatus, UserType } from '../../@common/enum';
 import * as jwt_decode from 'jwt-decode';
 import { Settings } from '../../@common/settings';
 
@@ -65,7 +65,11 @@ export class LoginPageComponent implements OnInit {
               });
               localStorage.setItem('currentUser', JSON.stringify(decodeToken));
               this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
-              this.router.navigate(['home/']).then((r) => {});
+              if (decodeToken['type'] === UserType.Student) {
+                this.router.navigate(['home-student/']).then((r) => {});
+              } else {
+                this.router.navigate(['home-tutor/']).then((r) => {});
+              }
             } else if (response.statusCode === StatusCodes.Unauthorized && response.data['active'] === 'false') {
               this.toastService.showToast(ToastStatus.Warning, 'Warning!', response.message);
               this.router.navigate(['auth/verify']).then((r) => {});
