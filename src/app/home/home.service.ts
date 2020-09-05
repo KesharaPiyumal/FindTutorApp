@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 })
 export class HomeService {
   tutorUrl = 'tutor';
+  studentUrl = 'student';
   constructor(public commonHttpService: CommonHttpService) {}
 
   geAllTutors(latLng) {
@@ -26,10 +27,18 @@ export class HomeService {
   }
 
   rateTutor(rateData) {
-    return this.commonHttpService.postData(this.tutorUrl + '/rate', rateData).pipe(
-        map((data) => {
-          return data;
-        })
+    return this.commonHttpService.postData(this.studentUrl + '/rateTutor', rateData).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  getAllStudents() {
+    return this.commonHttpService.getAll(this.studentUrl + '/all').pipe(
+      map((data) => {
+        return data;
+      })
     );
   }
 }

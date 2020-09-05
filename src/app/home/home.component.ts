@@ -127,6 +127,7 @@ export class HomeComponent implements OnInit {
     const modalData = await modal.onWillDismiss();
     if (modalData.data !== null) {
     }
+    this.getAllTutors();
   }
 
   getAllTutorsWithoutFiltering() {
@@ -143,10 +144,14 @@ export class HomeComponent implements OnInit {
         if (this.tutorList.length === 0) {
           this.isNotFound = true;
         }
-        this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
+        // this.tutorList.forEach((tutor) => {
+        //   // this.getDataFromAPI(tutor);
+        // });
         this.tutorList.forEach((tutor) => {
-          // this.getDataFromAPI(tutor);
+          this.setRating(tutor);
+          this.checkRatingStatus(tutor);
         });
+        this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
       },
       (error) => {
         this.tutorLoading = false;
@@ -170,14 +175,44 @@ export class HomeComponent implements OnInit {
           if (this.tutorList.length === 0) {
             this.isNotFound = true;
           }
-          this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
+          // this.tutorList.forEach((tutor) => {
+          //   // this.getDataFromAPI(tutor);
+          // });
           this.tutorList.forEach((tutor) => {
-            // this.getDataFromAPI(tutor);
+            this.setRating(tutor);
+            this.checkRatingStatus(tutor);
           });
+          this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
         },
         (error) => {
           this.tutorLoading = false;
         }
       );
+  }
+
+  checkRatingStatus(tutor) {
+    if (tutor['rating'] > 0 && tutor['rating'] <= 2) {
+      tutor['ratingStatus'] = 'danger';
+    } else if (tutor['rating'] > 2 && tutor['rating'] <= 3) {
+      tutor['ratingStatus'] = 'warning';
+    } else if (tutor['rating'] > 3 && tutor['rating'] <= 5) {
+      tutor['ratingStatus'] = 'success';
+    } else {
+      tutor['ratingStatus'] = 'basic';
+    }
+  }
+
+  setRating(tutor) {
+    if (tutor['studenttutorrates']['length'] > 0) {
+      let ratedCount = 0;
+      let fullRating = 0;
+      tutor['studenttutorrates'].forEach((stTutorRate) => {
+        ratedCount++;
+        fullRating = fullRating + stTutorRate['rateId'];
+      });
+      tutor['rating'] = (fullRating / ratedCount).toFixed(1);
+    } else {
+      tutor['rating'] = 0;
+    }
   }
 }

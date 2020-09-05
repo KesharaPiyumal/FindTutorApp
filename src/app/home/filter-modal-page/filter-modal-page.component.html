@@ -48,7 +48,7 @@
             <nb-option *ngFor="let subject of subjectsDropdown" [value]="subject['value']">{{ subject['label'] }}</nb-option>
           </nb-select>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 mb-2">
           <label class="label">Distance Range (km) :</label>
           <div class="d-flex flex-row">
             <input type="number" fullWidth nbInput status="primary" formControlName="distanceRange" />
@@ -57,7 +57,7 @@
       </div>
     </form>
     <div class="d-flex justify-content-center mt-2">
-      <button nbButton status="primary" fullWidth ghost (click)="dismissModal(true)">Filter</button>
+      <button nbButton status="primary" fullWidth hero (click)="dismissModal(true)">Filter</button>
     </div>
   </div>
 </ion-content>
