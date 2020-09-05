@@ -22,6 +22,7 @@ export class Tutor implements User {
   mediumId: number;
   subjectIds: number[];
   age: number;
+  gender: string;
 }
 
 export class Student implements User {

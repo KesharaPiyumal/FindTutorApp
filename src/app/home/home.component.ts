@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController, ModalController } from '@ionic/angular';
+import { MenuController, ModalController, PopoverController } from '@ionic/angular';
 import { NbMenuService } from '@nebular/theme';
 import { filter, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import config from '../fireBaseConfig';
 import { HomeService } from './home.service';
 import { Router } from '@angular/router';
-import { ModalLocationPageComponent } from '../auth/register-page/modal-location-page/modal-location-page.component';
 import { ProfileModalPageComponent } from './profile-modal-page/profile-modal-page.component';
 import { FilterModalPageComponent } from './filter-modal-page/filter-modal-page.component';
 import { ViewTutorProfileComponent } from './view-tutor-profile/view-tutor-profile.component';
+import * as _ from 'lodash';
+import { PopoverMenuComponent } from './popover-menu/popover-menu.component';
+import { PopMenuType } from '../@common/enum';
 
 @Component({
   selector: 'app-home',
@@ -19,43 +21,7 @@ import { ViewTutorProfileComponent } from './view-tutor-profile/view-tutor-profi
 export class HomeComponent implements OnInit {
   currentUser: any;
   public selectedIndex = 0;
-  public appPages = [
-    {
-      title: 'Auth',
-      url: '/auth/',
-      icon: 'mail',
-    },
-    {
-      title: 'Inbox',
-      url: '/folder/Inbox',
-      icon: 'mail',
-    },
-    {
-      title: 'Outbox',
-      url: '/folder/Outbox',
-      icon: 'paper-plane',
-    },
-    {
-      title: 'Favorites',
-      url: '/folder/Favorites',
-      icon: 'heart',
-    },
-    {
-      title: 'Archived',
-      url: '/folder/Archived',
-      icon: 'archive',
-    },
-    {
-      title: 'Trash',
-      url: '/folder/Trash',
-      icon: 'trash',
-    },
-    {
-      title: 'Spam',
-      url: '/folder/Spam',
-      icon: 'warning',
-    },
-  ];
+  public appPages = [];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   items = [
     { title: 'Profile', icon: 'person-outline', data: 1 },
@@ -63,13 +29,14 @@ export class HomeComponent implements OnInit {
   ];
   tutorList = [];
   tutorLoading = false;
+  isNotFound = false;
   constructor(
     private menu: MenuController,
-    private nbMenuService: NbMenuService,
     private http: HttpClient,
     public homeService: HomeService,
     public router: Router,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public popoverController: PopoverController
   ) {
     if (localStorage.getItem('currentUser')) {
       this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -77,7 +44,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.menuItemClicked();
     const path = window.location.pathname.split('folder/')[1];
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex((page) => page.title.toLowerCase() === path.toLowerCase());
@@ -85,23 +51,28 @@ export class HomeComponent implements OnInit {
     this.getAllTutors();
   }
 
-  menuItemClicked() {
-    this.nbMenuService
-      .onItemClick()
-      .pipe(
-        filter(({ tag }) => tag === 'context-menu'),
-        map(({ item: { data } }) => data)
-      )
-      .subscribe((dataId) => {
-        if (dataId === 1) {
-          this.openProfileModal().then((r) => {});
-        } else if (dataId === 2) {
+  async presentPopover(event) {
+    const popover = await this.popoverController.create({
+      component: PopoverMenuComponent,
+      event: event,
+      translucent: true,
+      animated: true,
+      showBackdrop: true,
+    });
+    await popover.present();
+    const popData = await popover.onWillDismiss();
+    if (popData.data) {
+      if (popData.data['popMenuItemType'] === PopMenuType.Profile) {
+        this.openProfileModal().then((r) => {});
+      } else {
+        if (popData.data['popMenuItemType'] === PopMenuType.LogOut) {
           if (localStorage.getItem('currentUser')) {
             localStorage.removeItem('currentUser');
           }
           this.router.navigate(['auth/login']).then((r) => {});
         }
-      });
+      }
+    }
   }
 
   async openMenu() {
@@ -120,28 +91,6 @@ export class HomeComponent implements OnInit {
           });
         },
         (err) => {}
-      );
-  }
-
-  getAllTutors(examId?, mediumId?, subjectIds?, distanceRange?) {
-    let user;
-    if (localStorage.getItem('currentUser')) {
-      user = JSON.parse(localStorage.getItem('currentUser'));
-    }
-    this.tutorLoading = true;
-    this.homeService
-      .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange, examId, mediumId, subjectIds })
-      .subscribe(
-        (response) => {
-          this.tutorLoading = false;
-          this.tutorList = response.data;
-          this.tutorList.forEach((tutor) => {
-            // this.getDataFromAPI(tutor);
-          });
-        },
-        (error) => {
-          this.tutorLoading = false;
-        }
       );
   }
 
@@ -180,5 +129,55 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  menuPopUpControl() {}
+  getAllTutorsWithoutFiltering() {
+    this.isNotFound = false;
+    let user;
+    if (localStorage.getItem('currentUser')) {
+      user = JSON.parse(localStorage.getItem('currentUser'));
+    }
+    this.tutorLoading = true;
+    this.homeService.geAllTutors({ lat: user['latitude'], lng: user['longitude'] }).subscribe(
+      (response) => {
+        this.tutorLoading = false;
+        this.tutorList = response.data;
+        if (this.tutorList.length === 0) {
+          this.isNotFound = true;
+        }
+        this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
+        this.tutorList.forEach((tutor) => {
+          // this.getDataFromAPI(tutor);
+        });
+      },
+      (error) => {
+        this.tutorLoading = false;
+      }
+    );
+  }
+
+  getAllTutors(examId?, mediumId?, subjectIds?, distanceRange?) {
+    this.isNotFound = false;
+    let user;
+    if (localStorage.getItem('currentUser')) {
+      user = JSON.parse(localStorage.getItem('currentUser'));
+    }
+    this.tutorLoading = true;
+    this.homeService
+      .geAllFilteredTutors({ lat: user['latitude'], lng: user['longitude'], distanceRange, examId, mediumId, subjectIds })
+      .subscribe(
+        (response) => {
+          this.tutorLoading = false;
+          this.tutorList = response.data;
+          if (this.tutorList.length === 0) {
+            this.isNotFound = true;
+          }
+          this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
+          this.tutorList.forEach((tutor) => {
+            // this.getDataFromAPI(tutor);
+          });
+        },
+        (error) => {
+          this.tutorLoading = false;
+        }
+      );
+  }
 }

@@ -43,7 +43,7 @@
         </ion-buttons>
         <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
         <ion-buttons slot="end">
-          <ion-button shape="round" [nbContextMenu]="items" nbContextMenuTag="context-menu" (click)="menuPopUpControl()"
+          <ion-button shape="round" (click)="presentPopover($event)"
             ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
               <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
           ></ion-button>
@@ -51,33 +51,81 @@
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding" [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
-      <div class="w-100 d-flex justify-content-end mb-1">
-        <button nbButton outline status="primary" size="small" class="ml-1" (click)="openFilterModal()">
+      <div class="w-100 d-flex justify-content-between mb-1">
+        <button nbButton ghost status="primary" size="small" class="ml-1" (click)="getAllTutorsWithoutFiltering()">
+          <fa-icon class="mr-1" icon="sync"></fa-icon>All
+        </button>
+        <button nbButton ghost status="primary" size="small" class="ml-1" (click)="openFilterModal()">
           <fa-icon class="mr-1" icon="filter"></fa-icon>Filter By
         </button>
-        <button nbButton outline status="primary" size="small" class="ml-1" (click)="getAllTutors()">
-          <fa-icon icon="sync"></fa-icon>
-        </button>
       </div>
-      <div class="w-100">
-        <nb-card accent="primary" *ngFor="let tutor of tutorList; let i = index" class="mb-2">
-          <div class="p-2">
+      <div class="w-100" *ngIf="!isNotFound">
+        <nb-card status="primary" *ngFor="let tutor of tutorList; let i = index" class="mb-2">
+          <nb-card-header style="padding: 0.5rem 1rem;">
             <div class="w-100 d-flex flex-row align-items-center">
               <div style="min-width: 240px; max-width: 240px;" class="d-flex flex-row">
                 <fa-icon style="font-size: 35px; color: #d1d7e6;" icon="user-circle"></fa-icon>
                 <div class="ml-2 d-flex flex-column">
                   <span style="font-size: 13px;">{{ tutor['firstName'] + ' ' + tutor['lastName'] }}</span>
-                  <span style="font-size: 11px; margin-top: -5px; color: #c0c8cf;">{{ tutor['geoCordAddress'] }}</span>
+                  <div class="d-flex flex-row align-items-center">
+                    <span class="mr-2" style="font-size: 11px; margin-top: -5px; font-weight: lighter;">{{ tutor['age'] }} yrs</span>
+                    <span style="font-size: 11px; margin-top: -5px; font-weight: lighter;"
+                      ><fa-icon style="font-size: 7px;" class="mr-1" icon="circle"></fa-icon>{{ tutor['gender'] }}</span
+                    >
+                  </div>
                 </div>
               </div>
               <div class="d-flex align-items-center justify-content-end" style="min-width: calc(100vw - 300px);">
                 <ion-buttons>
-                  <ion-button (click)="goToTutorProfile(tutor)"><fa-icon style="color: #989eac;" icon="chevron-right"></fa-icon></ion-button>
+                  <ion-button (click)="goToTutorProfile(tutor)"><fa-icon icon="chevron-right"></fa-icon></ion-button>
                 </ion-buttons>
               </div>
             </div>
+          </nb-card-header>
+          <div class="p-2">
+            <div class="d-flex flex-column p-2">
+              <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
+                <span style="min-width: 130px; color: #c0c8cf;">Targeted Exam:</span><span>{{ tutor['exam']['name'] }}</span>
+              </div>
+              <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
+                <span style="min-width: 130px; color: #c0c8cf;">Medium:</span><span>{{ tutor['medium']['name'] }}</span>
+              </div>
+              <div class="d-flex flex-column">
+                <span style="font-size: 12px; min-width: 130px; color: #c0c8cf;">Subjects:</span>
+                <span style="font-size: 12px; margin-left: 130px;" *ngFor="let tSubject of tutor['subjectTutors']"
+                  ><fa-icon class="mr-2" style="color: #36f;" icon="book"></fa-icon>{{ tSubject['subject']['name'] }}</span
+                >
+              </div>
+            </div>
           </div>
+          <nb-card-footer style="padding: 0.5rem 1rem;">
+            <div class="d-flex justify-content-between align-items-center">
+              <div id="home-card-bar" class="w-100 d-flex flex-column">
+                <div class="d-flex w-100 justify-content-between">
+                  <span class="rated-txt">4.3 |<span class="ml-1" style="font-size: 12px">Rated</span></span>
+                  <span class="km-txt mr-4">{{ tutor['distanceRange'] | number: '1.1-1' }} km</span>
+                </div>
+                <nb-progress-bar class="mt-1" status="primary" size="tiny" style="width: 90%;" [value]="36"></nb-progress-bar>
+              </div>
+              <div class="d-flex flex-row align-items-center">
+                <button style="text-transform: capitalize;" nbButton ghost outline status="basic" (click)="goToTutorProfile(tutor)">
+                  Rate<fa-icon class="ml-1" icon="thumbs-up"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </nb-card-footer>
         </nb-card>
+      </div>
+
+      <div *ngIf="isNotFound" class="w-100 not-found-bg">
+        <div class="not-found-text">
+          <h6 style="color: #36f;" class="mb-0">Not Found</h6>
+        </div>
+      </div>
+      <div class="mt-2" *ngIf="isNotFound">
+        <button nbButton fullWidth status="primary" hero (click)="openFilterModal()">
+          Search Again<fa-icon class="ml-3" icon="sync-alt"></fa-icon>
+        </button>
       </div>
     </ion-content>
   </div>

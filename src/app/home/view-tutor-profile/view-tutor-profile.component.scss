@@ -12,8 +12,8 @@
   border-radius: 50%;
   background-color: white;
   box-shadow: 3px 8px 12px -3px #d1d7e6;
-  left: 5%;
   top: 60%;
+  left: calc(50% - (95rem/32));
 }
 .pro-tutor-icon {
   font-size: 95px;

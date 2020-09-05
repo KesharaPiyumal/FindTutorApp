@@ -26,3 +26,7 @@ export enum ExamType {
   OLExamination = 1,
   ALExamination = 2,
 }
+export enum PopMenuType {
+  Profile = 1,
+  LogOut = 2,
+}

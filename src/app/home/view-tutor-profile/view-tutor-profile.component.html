@@ -12,4 +12,23 @@
       <fa-icon class="pro-tutor-icon" icon="user-circle"></fa-icon>
     </div>
   </div>
+  <div class="mt-5 d-flex justify-content-center">
+    <span>{{ this.tutorData['firstName'] + ' ' + this.tutorData['lastName'] }}</span>
+  </div>
+  <div class="d-flex justify-content-center mb-2"><p style="color: #d1d7e6;font-size: 11px;">B.Sc. in Honours Software Engineering</p></div>
+  <div class="d-flex justify-content-center mb-2">
+    <nb-progress-bar status="primary" size="tiny" [value]="36" style="width: 75%;"></nb-progress-bar>
+  </div>
+  <div class="d-flex flex-row justify-content-center align-items-center mb-2">
+    <button style="text-transform: capitalize;" nbButton status="primary" class="mr-2" (click)="call()">Call<fa-icon class="ml-2" icon="phone"></fa-icon></button>
+    <button style="text-transform: capitalize;" nbButton status="primary" outline>Message<fa-icon class="ml-2" icon="comment-alt"></fa-icon></button>
+  </div>
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex flex-row">
+      <div *ngFor="let r of tutorRatings; let j = index" class="d-flex flex-row align-items-center" (click)="selectionStarRating(j)">
+        <nb-icon style="color: #36f;" *ngIf="!r['selected']" icon="star-outline"></nb-icon>
+        <fa-icon style="color: #36f;" *ngIf="r['selected']" icon="star"></fa-icon>
+      </div>
+    </div>
+  </div>
 </ion-content>

@@ -67,6 +67,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
       address: ['', Validators.required],
       location: ['', Validators.required],
       age: [],
+      gender: [1],
       examId: [],
       mediumId: [],
       subjectIds: [[]],
@@ -101,6 +102,9 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
   }
   get age() {
     return this.registerFormAdv.get('age');
+  }
+  get gender() {
+    return this.registerFormAdv.get('gender');
   }
   get examId() {
     return this.registerFormAdv.get('examId');
@@ -170,15 +174,18 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
 
   setControlsForType(event: any) {
     const ageC = this.age;
+    const genderC = this.gender;
     const mediumIdC = this.mediumId;
     const subjectIdsC = this.subjectIds;
     const examIdC = this.examId;
     ageC.reset();
+    genderC.reset();
     mediumIdC.reset();
     examIdC.reset();
     subjectIdsC.reset();
     if (event === UserType.Tutor) {
       ageC.setValidators(Validators.required);
+      genderC.setValidators(Validators.required);
       mediumIdC.setValidators(Validators.required);
       examIdC.setValidators(Validators.required);
       subjectIdsC.setValidators(Validators.required);
@@ -189,6 +196,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
       subjectIdsC.clearValidators();
     }
     ageC.updateValueAndValidity();
+    genderC.updateValueAndValidity();
     mediumIdC.updateValueAndValidity();
     examIdC.updateValueAndValidity();
     subjectIdsC.updateValueAndValidity();
@@ -244,6 +252,7 @@ export class RegisterPageComponent implements OnInit, AfterViewInit {
       const tutor: Tutor = {
         address: this.address.value,
         age: this.age.value,
+        gender: this.gender.value,
         email: this.email.value,
         examId: this.examId.value,
         firstName: this.firstName.value,

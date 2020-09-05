@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController} from '@ionic/angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StatusCodes } from '../../@common/enum';
 import { EssentialDataService } from '../../auth/essential-data.service';
 
@@ -33,10 +33,14 @@ export class FilterModalPageComponent implements OnInit {
   ngOnInit() {
     this.filterForm = this.formBuilder.group({
       examId: [null],
-      mediumId: [null],
-      subjectIds: [],
+      mediumId: [null, Validators.required],
+      subjectIds: [[]],
       distanceRange: [0],
     });
+    this.filterForm.patchValue({
+      mediumId: this.mediumDropdown[2]['value'],
+    });
+    this.selectedMediumId = this.mediumDropdown[2]['value'];
     this.getAllExams();
   }
 
@@ -57,12 +61,16 @@ export class FilterModalPageComponent implements OnInit {
   dismissModal(bool?) {
     if (bool) {
       let sIds = [];
-      if (this.subjectIds.value[0]['length'] === 0) {
-        sIds = [];
+      if (this.subjectIds.value[0]) {
+        if (this.subjectIds.value[0]['length'] === 0) {
+          sIds = [];
+        } else {
+          this.subjectIds.value.forEach((item) => {
+            sIds.push(item);
+          });
+        }
       } else {
-        this.subjectIds.value.forEach((item) => {
-          sIds.push(item);
-        });
+        sIds = [];
       }
       this.modalController
         .dismiss(
@@ -103,25 +111,27 @@ export class FilterModalPageComponent implements OnInit {
   }
 
   getAllSubjects() {
-    this.subjectsLoading = true;
-    const reqData = { examId: this.selectedExamId, mediumId: this.selectedMediumId };
-    this.essentialDataService.getAllSubjectsForExamAndMedium(reqData).subscribe(
-      (response) => {
-        this.subjectsLoading = false;
-        if (response.statusCode === StatusCodes.Success) {
-          this.subjectsDropdown = [];
-          this.filterForm.patchValue({
-            subjectIds: [[]],
-          });
-          response.data.forEach((item) => {
-            this.subjectsDropdown.push({ label: item['name'], value: item['id'] });
-          });
+    if (this.selectedExamId && this.selectedMediumId) {
+      this.subjectsLoading = true;
+      const reqData = { examId: this.selectedExamId, mediumId: this.selectedMediumId };
+      this.essentialDataService.getAllSubjectsForExamAndMedium(reqData).subscribe(
+        (response) => {
+          this.subjectsLoading = false;
+          if (response.statusCode === StatusCodes.Success) {
+            this.subjectsDropdown = [];
+            this.filterForm.patchValue({
+              subjectIds: [[]],
+            });
+            response.data.forEach((item) => {
+              this.subjectsDropdown.push({ label: item['name'], value: item['id'] });
+            });
+          }
+        },
+        (error) => {
+          this.subjectsLoading = false;
         }
-      },
-      (error) => {
-        this.subjectsLoading = false;
-      }
-    );
+      );
+    }
   }
 
   examinationOrGradeChange(event: any) {

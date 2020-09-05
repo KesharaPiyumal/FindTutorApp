@@ -117,3 +117,35 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.not-found-bg {
+  background: url('../../assets/images/not-found.svg') center;
+  background-size: cover;
+  height: 65%;
+  position: relative;
+}
+
+.not-found-text {
+  position: absolute;
+  top: 6%;
+  left: calc((100% - 200px) / 2);
+  height: 50px;
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.17rem;
+  background-color: white;
+  border: 1px solid #d1d7e6;
+}
+
+.rated-txt {
+  font-size: 14px;
+  font-weight: bold;
+  color: #8f9bb3;
+}
+
+.km-txt {
+  color: #2dd36f;
+  font-size: 20px;
+}
