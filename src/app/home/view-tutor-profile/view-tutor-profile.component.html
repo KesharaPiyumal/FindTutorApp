@@ -13,17 +13,20 @@
     </div>
   </div>
   <div class="mt-5 d-flex justify-content-center">
-    <span>{{ this.tutorData['firstName'] + ' ' + this.tutorData['lastName'] }}</span>
+    <span style="font-size: 18px">{{ this.tutorData['firstName'] + ' ' + this.tutorData['lastName'] }}</span>
   </div>
   <div class="d-flex justify-content-center mb-2">
-    <p style="color: #d1d7e6; font-size: 11px;">B.Sc. in Honours Software Engineering</p>
+    <p style="color: #d1d7e6; font-size: 11px;">{{tutorData['about']}}</p>
+  </div>
+  <div class="d-flex justify-content-center align-items-center mb-1">
+    <span>{{tutorData['rating'] +' / 5 '}}<fa-icon class="ml-1 mr-2" style="font-size: 8px" icon="star"></fa-icon>Ratings</span>
   </div>
   <div class="d-flex justify-content-center mb-2">
     <nb-progress-bar
       [status]="tutorData['ratingStatus']"
       size="tiny"
       [value]="(tutorData['rating'] / 5) * 100"
-      style="width: 75%;"
+      style="width: 80%;"
     ></nb-progress-bar>
   </div>
   <div class="d-flex flex-row justify-content-center align-items-center mb-2">
@@ -34,11 +37,14 @@
       Message<fa-icon class="ml-2" icon="comment-alt"></fa-icon>
     </button>
   </div>
-  <div class="d-flex justify-content-center align-items-center">
-    <div class="d-flex flex-row">
-      <div *ngFor="let r of tutorRatings; let j = index" class="d-flex flex-row align-items-center" (click)="selectionStarRating(j)">
-        <nb-icon style="color: #36f;" *ngIf="!r['selected']" icon="star-outline"></nb-icon>
-        <fa-icon style="color: #36f;" *ngIf="r['selected']" icon="star"></fa-icon>
+  <div style="position: fixed;bottom: 0;height: 4.5rem" class="w-100">
+    <div class="d-flex justify-content-center align-items-center h-100">
+      <div class="d-flex flex-row">
+        <span style="color: #36f;" class="mr-2">You Rated |</span>
+        <div *ngFor="let r of tutorRatings; let j = index" class="d-flex flex-row align-items-center" (click)="selectionStarRating(j)">
+          <nb-icon style="color: #36f;" *ngIf="!r['selected']" icon="star-outline"></nb-icon>
+          <fa-icon style="color: #36f;" *ngIf="r['selected']" icon="star"></fa-icon>
+        </div>
       </div>
     </div>
   </div>

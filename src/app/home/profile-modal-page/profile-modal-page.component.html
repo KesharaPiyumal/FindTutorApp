@@ -6,7 +6,7 @@
     </div>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
+<ion-content fullscreen [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
   <div class="d-flex justify-content-center mt-3">
     <div style="position: relative;">
       <fa-icon style="font-size: 125px; color: #d1d7e6;" icon="user-circle"></fa-icon>
@@ -18,6 +18,26 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="p-2">
+    <form [formGroup]="profileForm" class="mb-1">
+      <div class="d-flex justify-content-center mb-2">
+        <span style="font-size: 18px">{{tutor['displayName']}}</span>
+      </div>
+      <div class="d-flex flex-column mb-2">
+        <textarea
+          nbInput
+          rows="2"
+          formControlName="about"
+          type="text"
+          placeholder="About"
+          fullWidth
+          fieldSize="medium"
+          status="primary"
+        ></textarea>
+      </div>
+    </form>
+    <button nbButton fullWidth ghost status="primary" (click)="updateData()">Update</button>
   </div>
 
   <!--input image file-->

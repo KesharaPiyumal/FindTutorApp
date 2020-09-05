@@ -1,3 +1,18 @@
-<p>
-  tutor-home works!
-</p>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
+      <ion-buttons slot="end">
+        <ion-button shape="round" (click)="presentPopover($event)"
+        ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
+          <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
+        ></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding" >
+  </ion-content>
+</div>
