@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ViewTutorProfileComponent } from './view-tutor-profile/view-tutor-profile.component';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { PopoverMenuComponent } from './popover-menu/popover-menu.component';
+import { CommonSharedModule } from '../@common/common-shared/common-shared.module';
 
 @NgModule({
   declarations: [HomeComponent, ProfileModalPageComponent, FilterModalPageComponent, ViewTutorProfileComponent, PopoverMenuComponent],
@@ -41,6 +42,7 @@ import { PopoverMenuComponent } from './popover-menu/popover-menu.component';
     NbBadgeModule,
     NbSpinnerModule,
     NbProgressBarModule,
+    CommonSharedModule,
   ],
   exports: [ProfileModalPageComponent, FilterModalPageComponent, ViewTutorProfileComponent, PopoverMenuComponent],
   providers: [CallNumber],

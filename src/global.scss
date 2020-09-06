@@ -60,3 +60,7 @@ nb-context-menu {
 .nb-theme-default nb-progress-bar.size-tiny .progress-container {
   height: 0.6rem !important;
 }
+ion-toolbar {
+  --background: #3366ff;
+  --color: white;
+}

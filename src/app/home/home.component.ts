@@ -150,6 +150,7 @@ export class HomeComponent implements OnInit {
         this.tutorList.forEach((tutor) => {
           this.setRating(tutor);
           this.checkRatingStatus(tutor);
+          this.subjectsSetForTutor(tutor);
         });
         this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
       },
@@ -181,6 +182,7 @@ export class HomeComponent implements OnInit {
           this.tutorList.forEach((tutor) => {
             this.setRating(tutor);
             this.checkRatingStatus(tutor);
+            this.subjectsSetForTutor(tutor);
           });
           this.tutorList = _.orderBy(response.data, ['distanceRange', 'rating'], ['asc', 'desc']);
         },
@@ -212,10 +214,27 @@ export class HomeComponent implements OnInit {
       });
       tutor['rating'] = (fullRating / ratedCount).toFixed(1);
       tutor['ratingCount'] = ratedCount;
-
     } else {
       tutor['rating'] = 0;
       tutor['ratingCount'] = ratedCount;
+    }
+  }
+
+  subjectsSetForTutor(tutor) {
+    const subjectLength = tutor['subjectTutors'].length;
+    const lastSubject = tutor['subjectTutors'][subjectLength - 1];
+    tutor['allSubjects'] = '';
+    if (subjectLength > 0) {
+      let subjects = '';
+      tutor['subjectTutors'].forEach((item) => {
+        subjects = subjects + item['subject']['name'];
+        if (lastSubject.id !== item.id) {
+          subjects = subjects + ' / ';
+        }
+      });
+      tutor['allSubjects'] = subjects;
+    } else {
+      tutor['allSubjects'] = lastSubject['subject']['name'];
     }
   }
 }

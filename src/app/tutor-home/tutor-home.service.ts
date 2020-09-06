@@ -16,4 +16,12 @@ export class TutorHomeService {
       })
     );
   }
+
+  getTutor(tId) {
+    return this.commonHttpService.postData(this.tutorUrl + '/one', { tutorId: tId }).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
 }

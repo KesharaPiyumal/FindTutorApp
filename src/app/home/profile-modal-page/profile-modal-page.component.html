@@ -7,8 +7,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
-  <div class="d-flex justify-content-center mt-3">
-    <div style="position: relative;">
+  <div class="d-flex justify-content-center align-items-center pt-3 top-bg">
+    <div class="pro-pic-container">
       <fa-icon style="font-size: 125px; color: #d1d7e6;" icon="user-circle"></fa-icon>
       <div class="camera-input">
         <div class="d-flex justify-content-center align-items-center w-100 h-100">
@@ -18,12 +18,12 @@
         </div>
       </div>
     </div>
+    <div class="d-flex justify-content-center align-items-center pro-text-container w-100">
+      <span style="font-size: 18px;color: white">{{ user['displayName'] }}</span>
+    </div>
   </div>
   <div class="p-2">
     <form [formGroup]="profileForm" class="mb-1 mt-1">
-      <div class="d-flex justify-content-center mb-4">
-        <span style="font-size: 18px">{{user['displayName']}}</span>
-      </div>
       <div class="d-flex flex-column mb-2">
         <textarea
           nbInput
@@ -35,6 +35,14 @@
           fieldSize="medium"
           status="primary"
         ></textarea>
+      </div>
+      <div class="w-100 d-flex flex-row align-items-center">
+        <div style="width: calc(100vw - 61px);" class="mr-1 disabled-gl">
+          <input nbInput placeholder="Your Location" formControlName="location" fullWidth fieldSize="medium" status="primary" />
+        </div>
+        <button nbButton size="medium" status="primary" (click)="updateLocation()">
+          <nb-icon pack="eva" icon="pin-outline"></nb-icon>
+        </button>
       </div>
     </form>
     <button nbButton fullWidth ghost status="primary" (click)="updateData()">Update</button>

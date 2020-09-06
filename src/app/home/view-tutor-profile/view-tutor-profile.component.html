@@ -16,7 +16,7 @@
     <span style="font-size: 18px;">{{ this.tutorData['firstName'] + ' ' + this.tutorData['lastName'] }}</span>
   </div>
   <div class="d-flex justify-content-center mb-2">
-    <p style="color: #d1d7e6; font-size: 11px;">{{ tutorData['about'] }}</p>
+    <p style="color: #8f9bb3; font-size: 11px;">{{ tutorData['about'] }}</p>
   </div>
   <div class="d-flex flex-row justify-content-center align-items-center mb-2">
     <button style="text-transform: capitalize;" nbButton status="primary" class="mr-2" (click)="call()">
@@ -49,9 +49,9 @@
     </div>
   </div>
   <div class="d-flex flex-column w-100">
-    <div class="d-flex justify-content-center"><fa-icon style="font-size: 30px;" icon="map-marker-alt"></fa-icon></div>
+    <div class="d-flex justify-content-center"><fa-icon style="color: #36f; font-size: 30px;" icon="map-marker-alt"></fa-icon></div>
     <div class="d-flex justify-content-center">
-      <p style="font-size: 12px;color: #8f9bb3">{{ tutorData['geoAddress'] ? tutorData['geoAddress'] : '' }}</p>
+      <p style="font-size: 12px; color: #8f9bb3;">{{ tutorData['geoAddress'] ? tutorData['geoAddress'] : '' }}</p>
     </div>
   </div>
   <div style="position: fixed; bottom: 0; height: 4.5rem;" class="w-100">
