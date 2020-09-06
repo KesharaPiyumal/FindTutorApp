@@ -1,18 +1,34 @@
+<ion-menu side="start" content-id="main-content">
+  <ion-header>
+    <div class="d-flex flex-row align-items-center justify-content-center p-4">
+      <img style="width: 20%;" src="../../assets/icon.png" alt="" />
+      <h3 class="ml-2 mb-0" style="font-family: 'Paytone One', serif;">FindTutor</h3>
+    </div>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let item of menuItems" button>
+        <ion-icon [name]="item['icon']" slot="start"></ion-icon>
+        <ion-label>{{ item['name'] }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
-      <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
+      <ion-title>Dashboard</ion-title>
       <ion-buttons slot="end">
         <ion-button shape="round" (click)="presentPopover($event)"
-        ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
-          <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
+          ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
+            <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
         ></ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding" >
-  </ion-content>
+  <ion-content class="ion-padding"> </ion-content>
 </div>

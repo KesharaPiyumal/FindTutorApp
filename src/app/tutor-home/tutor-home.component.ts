@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./tutor-home.component.scss'],
 })
 export class TutorHomeComponent implements OnInit {
+  menuItems = [{ name: 'Dashboard', data: 1, icon: 'stats-chart' },{ name: 'Other', data: 2, icon: 'bookmark' }];
   constructor(public popoverController: PopoverController, public modalController: ModalController, public router: Router) {}
 
   ngOnInit() {}

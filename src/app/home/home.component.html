@@ -1,16 +1,16 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-      <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
-      <ion-buttons slot="end">
-        <ion-button shape="round" (click)="presentPopover($event)"
-          ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
-            <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
-        ></ion-button>
-      </ion-buttons>
+      <div class="d-flex flex-row align-items-center">
+        <img class="ml-3" style="width: 11%;" src="../../assets/icon.png" alt="" />
+        <ion-title style="font-family: 'Paytone One', serif; font-size: 1.6rem;">FindTutor</ion-title>
+        <ion-buttons slot="end">
+          <ion-button shape="round" (click)="presentPopover($event)"
+            ><div style="width: 16px; height: 32px;" class="d-flex justify-content-center align-items-center">
+              <fa-icon style="font-size: 16px;" icon="ellipsis-v"></fa-icon></div
+          ></ion-button>
+        </ion-buttons>
+      </div>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding" [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
@@ -23,8 +23,13 @@
       </button>
     </div>
     <div class="w-100" *ngIf="!isNotFound" style="height: calc(100vh - 125px); overflow: auto;">
-      <nb-card *ngFor="let tutor of tutorList; let i = index" style="box-shadow: 0px 2px 5px #bababa;" class="mb-3" (click)="goToTutorProfile(tutor)">
-        <nb-card-header style="padding: 0.5rem 1rem;background-color: #f6f6f6;">
+      <nb-card
+        *ngFor="let tutor of tutorList; let i = index"
+        style="box-shadow: 0px 2px 5px #bababa;"
+        class="mb-3"
+        (click)="goToTutorProfile(tutor)"
+      >
+        <nb-card-header style="padding: 0.5rem 1rem; background-color: #f6f6f6;">
           <div class="w-100 d-flex flex-row align-items-center">
             <div style="min-width: 240px; max-width: 240px;" class="d-flex flex-row">
               <fa-icon style="font-size: 35px; color: #d1d7e6;" icon="user-circle"></fa-icon>
