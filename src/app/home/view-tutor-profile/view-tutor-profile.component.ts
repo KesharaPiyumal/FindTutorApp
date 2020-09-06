@@ -153,16 +153,18 @@ export class ViewTutorProfileComponent implements OnInit {
   }
 
   setRating(tutor) {
+    let ratedCount = 0;
+    let fullRating = 0;
     if (tutor['studenttutorrates']['length'] > 0) {
-      let ratedCount = 0;
-      let fullRating = 0;
       tutor['studenttutorrates'].forEach((stTutorRate) => {
         ratedCount++;
         fullRating = fullRating + stTutorRate['rateId'];
       });
       tutor['rating'] = (fullRating / ratedCount).toFixed(1);
+      tutor['ratingCount'] = ratedCount;
     } else {
       tutor['rating'] = 0;
+      tutor['ratingCount'] = ratedCount;
     }
   }
 

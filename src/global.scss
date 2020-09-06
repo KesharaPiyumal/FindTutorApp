@@ -56,3 +56,7 @@ nb-context-menu {
 .menu-item a .menu-title {
   flex: none !important;
 }
+
+.nb-theme-default nb-progress-bar.size-tiny .progress-container {
+  height: 0.6rem !important;
+}
