@@ -57,7 +57,7 @@
   <div style="position: fixed; bottom: 0; height: 4.5rem;" class="w-100">
     <div class="d-flex justify-content-center align-items-center h-100">
       <div class="d-flex flex-row">
-        <span style="color: #36f;" class="mr-2">You Rated |</span>
+        <span style="color: #36f;" class="mr-2">You've Rated |</span>
         <div *ngFor="let r of tutorRatings; let j = index" class="d-flex flex-row align-items-center" (click)="selectionStarRating(j)">
           <nb-icon style="color: #36f;" *ngIf="!r['selected']" icon="star-outline"></nb-icon>
           <fa-icon style="color: #36f;" *ngIf="r['selected']" icon="star"></fa-icon>
