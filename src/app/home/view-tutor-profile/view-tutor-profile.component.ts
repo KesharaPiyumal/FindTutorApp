@@ -24,6 +24,7 @@ export class ViewTutorProfileComponent implements OnInit {
   ratingLoading = false;
   tutorLoading = false;
   studentLoading = false;
+  isRated = false;
   constructor(
     public params: NavParams,
     public modalController: ModalController,
@@ -45,12 +46,8 @@ export class ViewTutorProfileComponent implements OnInit {
     this.getAllStudents();
   }
 
-  dismissModal(bool?) {
-    if (bool) {
-      this.modalController.dismiss({}, 'set').then((r) => {});
-    } else {
-      this.modalController.dismiss(null, 'cancel').then((r) => {});
-    }
+  dismissModal() {
+    this.modalController.dismiss({ isRated: this.isRated }, 'cancel').then((r) => {});
   }
 
   selectionStarRating(rateIndex: number) {
@@ -108,6 +105,7 @@ export class ViewTutorProfileComponent implements OnInit {
         this.ratingLoading = false;
         if (response.statusCode === StatusCodes.Success) {
           // this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+          this.isRated = true;
           this.getAllTutorsWithoutFiltering();
         }
       },

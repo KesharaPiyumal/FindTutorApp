@@ -125,9 +125,9 @@ export class HomeComponent implements OnInit {
     });
     await modal.present();
     const modalData = await modal.onWillDismiss();
-    if (modalData.data !== null) {
+    if (modalData.data && modalData.data['isRated']) {
+      this.getAllTutors();
     }
-    this.getAllTutors();
   }
 
   getAllTutorsWithoutFiltering() {

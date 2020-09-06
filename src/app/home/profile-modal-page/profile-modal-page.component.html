@@ -1,7 +1,12 @@
 <ion-header translucent>
   <ion-toolbar>
     <div class="d-flex flex-row align-items-center ml-2">
-      <nb-icon style="font-size: 24px;" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
+      <ion-buttons>
+        <ion-button shape="round" (click)="dismissModal()"
+          ><div class="d-flex justify-content-center align-items-center">
+            <nb-icon style="font-size: 24px;" icon="arrow-back-outline"></nb-icon></div
+        ></ion-button>
+      </ion-buttons>
       <span style="font-size: 16px;">Profile</span>
     </div>
   </ion-toolbar>
@@ -19,11 +24,11 @@
       </div>
     </div>
     <div class="d-flex justify-content-center align-items-center pro-text-container w-100">
-      <span style="font-size: 18px;color: white">{{ user['displayName'] }}</span>
+      <span style="font-size: 18px; color: white;">{{ user['displayName'] }}</span>
     </div>
   </div>
   <div class="p-2">
-    <form [formGroup]="profileForm" class="mb-1 mt-1">
+    <form [formGroup]="profileForm" class="mt-1 mb-2">
       <div class="d-flex flex-column mb-2">
         <textarea
           nbInput

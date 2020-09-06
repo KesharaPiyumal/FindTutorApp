@@ -23,8 +23,8 @@
       </button>
     </div>
     <div class="w-100" *ngIf="!isNotFound" style="height: calc(100vh - 125px); overflow: auto;">
-      <nb-card status="primary" *ngFor="let tutor of tutorList; let i = index" class="mb-2">
-        <nb-card-header style="padding: 0.5rem 1rem;">
+      <nb-card *ngFor="let tutor of tutorList; let i = index" style="box-shadow: 0px 2px 5px #bababa;" class="mb-3" (click)="goToTutorProfile(tutor)">
+        <nb-card-header style="padding: 0.5rem 1rem;background-color: #f6f6f6;">
           <div class="w-100 d-flex flex-row align-items-center">
             <div style="min-width: 240px; max-width: 240px;" class="d-flex flex-row">
               <fa-icon style="font-size: 35px; color: #d1d7e6;" icon="user-circle"></fa-icon>
@@ -45,24 +45,20 @@
             </div>
           </div>
         </nb-card-header>
-        <ion-card>
-          <ion-card-content>
-            <div>
-              <div class="d-flex flex-column">
-                <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
-                  <span style="min-width: 130px; color: #c0c8cf;">Targeted Exam:</span><span>{{ tutor['exam']['name'] }}</span>
-                </div>
-                <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
-                  <span style="min-width: 130px; color: #c0c8cf;">Medium:</span><span>{{ tutor['medium']['name'] }}</span>
-                </div>
-                <div class="d-flex flex-row">
-                  <span style="font-size: 12px; min-width: 130px; color: #c0c8cf;">Subjects:</span>
-                  <span style="font-size: 12px;">{{ tutor['allSubjects'] }}</span>
-                </div>
-              </div>
+        <div>
+          <div class="d-flex flex-column p-3">
+            <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
+              <span style="min-width: 130px; color: #c0c8cf;">Targeted Exam:</span><span>{{ tutor['exam']['name'] }}</span>
             </div>
-          </ion-card-content>
-        </ion-card>
+            <div class="d-flex flex-row" style="font-size: 12px; min-width: 130px;">
+              <span style="min-width: 130px; color: #c0c8cf;">Medium:</span><span>{{ tutor['medium']['name'] }}</span>
+            </div>
+            <div class="d-flex flex-row">
+              <span style="font-size: 12px; min-width: 130px; color: #c0c8cf;">Subjects:</span>
+              <span style="font-size: 12px;">{{ tutor['allSubjects'] }}</span>
+            </div>
+          </div>
+        </div>
         <nb-card-footer style="padding: 0.5rem 1rem;">
           <div class="d-flex align-items-center">
             <div id="home-card-bar" class="w-100 d-flex flex-column">

@@ -1,7 +1,12 @@
 <ion-header translucent>
   <ion-toolbar>
     <div class="d-flex flex-row align-items-center ml-2">
-      <nb-icon style="font-size: 24px;" class="mr-2" icon="arrow-back-outline" (click)="dismissModal()"></nb-icon>
+      <ion-buttons>
+        <ion-button shape="round" (click)="dismissModal()"
+          ><div class="d-flex justify-content-center align-items-center">
+            <nb-icon style="font-size: 24px;" icon="arrow-back-outline"></nb-icon></div
+        ></ion-button>
+      </ion-buttons>
       <span style="font-size: 16px;">Filter By</span>
     </div>
   </ion-toolbar>
@@ -37,14 +42,21 @@
             <nb-option *ngFor="let medium of mediumDropdown" [value]="medium['value']">{{ medium['label'] }}</nb-option>
           </nb-select>
           <ng-container *ngIf="mediumId.invalid && mediumId.touched">
-                <span class="caption-danger" *ngIf="mediumId.errors?.required">
-                  required!
-                </span>
+            <span class="caption-danger" *ngIf="mediumId.errors?.required">
+              required!
+            </span>
           </ng-container>
         </div>
         <div class="col-md-12 mb-2">
           <label class="label">Subjects :</label>
-          <nb-select placeholder="Subjects" formControlName="subjectIds" multiple fullWidth class="d-flex flex-row align-items-center" status="primary">
+          <nb-select
+            placeholder="Subjects"
+            formControlName="subjectIds"
+            multiple
+            fullWidth
+            class="d-flex flex-row align-items-center"
+            status="primary"
+          >
             <nb-option *ngFor="let subject of subjectsDropdown" [value]="subject['value']">{{ subject['label'] }}</nb-option>
           </nb-select>
         </div>
