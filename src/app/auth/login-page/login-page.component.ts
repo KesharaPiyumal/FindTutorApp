@@ -64,7 +64,7 @@ export class LoginPageComponent implements OnInit {
                 type: response.data.type,
               });
               localStorage.setItem('currentUser', JSON.stringify(decodeToken));
-              this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+              // this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
               if (decodeToken['type'] === UserType.Student) {
                 this.router.navigate(['home-student/']).then((r) => {});
               } else {

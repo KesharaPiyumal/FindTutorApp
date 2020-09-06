@@ -107,7 +107,7 @@ export class ViewTutorProfileComponent implements OnInit {
       (response) => {
         this.ratingLoading = false;
         if (response.statusCode === StatusCodes.Success) {
-          this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
+          // this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
           this.getAllTutorsWithoutFiltering();
         }
       },
