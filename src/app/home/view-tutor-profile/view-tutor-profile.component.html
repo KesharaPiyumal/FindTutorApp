@@ -83,8 +83,10 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex flex-row align-items-center">
               <fa-icon style="font-size: 30px; color: #d1d7e6;" class="mr-3" icon="user-circle"></fa-icon>
-              <span style="font-size: 13px;">{{ tRate.student.firstName + ' ' + tRate.student.lastName }}</span>
-              <span *ngIf="tRate['studentId'] === studentData['userId']" style="font-size: 13px;" class="ml-2">(You)</span>
+              <span style="font-size: 12px; font-weight: bold; color: #8b909c;">{{
+                tRate.student.firstName + ' ' + tRate.student.lastName
+              }}</span>
+              <span *ngIf="tRate['studentId'] === studentData['userId']" style="font-size: 12px;" class="ml-2">(You)</span>
             </div>
             <span style="font-size: 11px; color: #8f9bb3;">{{ tRate['updatedAt'] | date: 'short' }}</span>
           </div>

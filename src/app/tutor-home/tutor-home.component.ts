@@ -49,7 +49,6 @@ export class TutorHomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getTutor();
-    this.getTutorRates();
   }
 
   ngAfterViewInit(): void {
@@ -109,6 +108,7 @@ export class TutorHomeComponent implements OnInit, AfterViewInit {
             this.loadedTutor = response.data;
             this.setRating(this.loadedTutor);
             this.ngAfterViewInit();
+            this.getTutorRates();
           }
         },
         (error) => {
