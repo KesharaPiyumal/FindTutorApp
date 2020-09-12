@@ -67,9 +67,9 @@ export class HomeComponent implements OnInit {
       } else {
         if (popData.data['popMenuItemType'] === PopMenuType.LogOut) {
           if (localStorage.getItem('currentUser')) {
-            localStorage.removeItem('currentUser');
+            localStorage.clear();
           }
-          this.router.navigate(['auth/login']).then((r) => {});
+          this.router.navigate(['']).then((r) => {});
         }
       }
     }

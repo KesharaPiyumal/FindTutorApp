@@ -38,6 +38,8 @@ export class AppComponent implements OnInit {
       } else {
         this.router.navigate(['home-student/']).then((r) => {});
       }
+    } else {
+      this.router.navigate(['auth/login']).then((r) => {});
     }
   }
 }
