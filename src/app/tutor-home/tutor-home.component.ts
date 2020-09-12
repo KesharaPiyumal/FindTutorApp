@@ -21,11 +21,11 @@ export class TutorHomeComponent implements OnInit, AfterViewInit {
   tutorLoading = false;
   loggedTutor: any;
   tutorRatings = [
-    { id: 1, count: 0, percentage: 0 },
-    { id: 2, count: 0, percentage: 0 },
-    { id: 3, count: 0, percentage: 0 },
-    { id: 4, count: 0, percentage: 0 },
-    { id: 5, count: 0, percentage: 0 },
+    { id: 1, count: 0, percentage: 0, status: 'danger' },
+    { id: 2, count: 0, percentage: 0, status: 'danger' },
+    { id: 3, count: 0, percentage: 0, status: 'warning' },
+    { id: 4, count: 0, percentage: 0, status: 'success' },
+    { id: 5, count: 0, percentage: 0, status: 'success' },
   ];
   loadedTutor: any;
   tutorRateList = [];
@@ -54,7 +54,7 @@ export class TutorHomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.loadedTutor) {
-      document.querySelector(`.stars-inner`)['style'].width = (+this.loadedTutor['rating'] / 5) * 47.35 + 'px';
+      document.querySelector(`.stars-inner`)['style'].width = (+this.loadedTutor['rating'] / 5) * 63.13 + 'px';
     }
   }
 

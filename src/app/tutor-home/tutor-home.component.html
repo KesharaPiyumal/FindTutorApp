@@ -31,7 +31,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding" [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
-    <nb-card style="border-left: 3px solid #00d68f;" class="p-2 mb-0">
+    <nb-card style="border-left: 3px solid #36f;" class="p-2 mb-0">
       <div><span style="font-weight: 600;">Ratings</span></div>
       <div class="d-flex flex-row align-items-center">
         <div style="width: 35%;" class="d-flex justify-content-center align-items-center">
@@ -46,7 +46,7 @@
         <div class="d-flex flex-column" style="width: 65%;">
           <div class="d-flex flex-row align-items-center" *ngFor="let tRate of tutorRatings | reverse; let x = index">
             <span class="mr-2">{{ tRate['id'] }}</span>
-            <nb-progress-bar class="w-100" size="tiny" status="primary" [value]="tRate['percentage']"></nb-progress-bar>
+            <nb-progress-bar class="w-100" size="tiny" [status]="tRate['status']" [value]="tRate['percentage']"></nb-progress-bar>
           </div>
         </div>
       </div>
