@@ -30,9 +30,12 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding" [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
-    <nb-card style="border-left: 3px solid #36f;" class="p-2 mb-0">
-      <div><span style="font-weight: 600;">Ratings</span></div>
+  <ion-content class="ion-padding" [nbSpinner]="tutorLoading || tutorRateLoading" nbSpinnerStatus="info">
+    <div style="border-bottom: 1px solid #36f;" class="mb-3">
+      <span style="color: #36f;">Ratings</span>
+    </div>
+    <nb-card style="border-left: 4px solid #36f;" class="p-2 mb-0">
+      <!--      <div><span style="font-weight: 600;">Ratings</span></div>-->
       <div class="d-flex flex-row align-items-center">
         <div style="width: 35%;" class="d-flex justify-content-center align-items-center">
           <div class="d-flex flex-column">
@@ -52,24 +55,18 @@
       </div>
     </nb-card>
     <section>
-      <div style="border-bottom: 1px solid #36f;" class="mt-3 mb-4">
+      <div style="border-bottom: 1px solid #36f;" class="mt-3 mb-3">
         <span style="color: #36f;">Reviews</span>
       </div>
-      <!--      <div class="pl-4 pr-4 pt-2">-->
-      <!--        <textarea fullWidth nbInput rows="2" [(ngModel)]="review"></textarea>-->
-      <!--        <div class="d-flex justify-content-end">-->
-      <!--          <button nbButton status="primary" size="small" (click)="addReview()">-->
-      <!--            {{ addTutorReview ? 'Post Review' : 'Update Review' }}-->
-      <!--          </button>-->
-      <!--        </div>-->
-      <!--      </div>-->
       <section class="d-flex flex-column">
         <div *ngFor="let tRate of tutorRateList; let y = index">
           <div class="mb-2" [ngStyle]="{ borderBottom: tRate['border'] ? '1px solid #e2dcdca3' : 'none' }">
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex flex-row align-items-center">
                 <fa-icon style="font-size: 30px; color: #d1d7e6;" class="mr-3" icon="user-circle"></fa-icon>
-                <span style="font-size: 13px;">{{ tRate['student']['firstName'] + ' ' + tRate['student']['lastName'] }}</span>
+                <span style="font-size: 12px; font-weight: bold">{{
+                  tRate['student']['firstName'] + ' ' + tRate['student']['lastName']
+                }}</span>
               </div>
               <span style="font-size: 11px; color: #8f9bb3;">{{ tRate['updatedAt'] | date: 'short' }}</span>
             </div>
