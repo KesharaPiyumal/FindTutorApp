@@ -19,7 +19,6 @@ export class LoginPageComponent implements OnInit {
   user = {} as User;
   loginForm: FormGroup;
   loading = false;
-  loggedUser: any;
   constructor(
     public formBuilder: FormBuilder,
     public router: Router,
@@ -28,13 +27,9 @@ export class LoginPageComponent implements OnInit {
     private toastService: ToastService,
     private essentialDataService: EssentialDataService
   ) {
-    if (localStorage.getItem('currentUser')) {
-      this.loggedUser = JSON.parse(localStorage.getItem('currentUser'));
-    }
   }
 
   ngOnInit() {
-    this.loggedCheck();
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -46,16 +41,6 @@ export class LoginPageComponent implements OnInit {
   }
   get password() {
     return this.loginForm.get('password');
-  }
-
-  loggedCheck() {
-    if (this.loggedUser) {
-      if (this.loggedUser['type'] === UserType.Tutor) {
-        this.router.navigate(['home-tutor/']).then((r) => {});
-      } else {
-        this.router.navigate(['home-student/']).then((r) => {});
-      }
-    }
   }
 
   userLogin(user: User) {

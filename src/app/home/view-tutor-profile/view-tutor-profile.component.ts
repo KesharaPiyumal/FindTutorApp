@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { HomeService } from '../home.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { StatusCodes, ToastStatus, UserType } from '../../@common/enum';
 import { ToastService } from '../../@common/services/toast.service';
+import { NbPopoverDirective } from '@nebular/theme';
 
 @Component({
   selector: 'app-view-tutor-profile',
@@ -11,6 +12,7 @@ import { ToastService } from '../../@common/services/toast.service';
   styleUrls: ['./view-tutor-profile.component.scss'],
 })
 export class ViewTutorProfileComponent implements OnInit {
+  @ViewChildren(NbPopoverDirective) popovers: QueryList<NbPopoverDirective>;
   tutorData: any;
   studentData: any;
   tutorRatings = [
@@ -24,7 +26,11 @@ export class ViewTutorProfileComponent implements OnInit {
   ratingLoading = false;
   tutorLoading = false;
   studentLoading = false;
+  tutorRateLoading = false;
   isRated = false;
+  tutorRateList = [];
+  addTutorReview = true;
+  review = '';
   constructor(
     public params: NavParams,
     public modalController: ModalController,
@@ -44,6 +50,7 @@ export class ViewTutorProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getAllStudents();
+    this.getTutorRates();
   }
 
   dismissModal() {
@@ -107,6 +114,7 @@ export class ViewTutorProfileComponent implements OnInit {
           // this.toastService.showToast(ToastStatus.Success, 'Success!', response.message);
           this.isRated = true;
           this.getAllTutorsWithoutFiltering();
+          this.getTutorRates();
         }
       },
       (error) => {
@@ -196,5 +204,47 @@ export class ViewTutorProfileComponent implements OnInit {
         this.studentLoading = false;
       }
     );
+  }
+
+  getTutorRates() {
+    this.tutorRateLoading = true;
+    if (this.tutorData) {
+      this.homeService.getAllStudentTutorRatesForTutorId({ tutorId: this.tutorData['id'] }).subscribe(
+        (response) => {
+          this.tutorRateLoading = false;
+          this.tutorRateList = response.data;
+          this.tutorRateList.forEach((item) => {
+            item['width'] = (+item['rateId'] / 5) * 47.35 + 'px';
+            if (item.studentId === this.studentData['userId'] && item.review) {
+              this.addTutorReview = false;
+            }
+          });
+        },
+        (error) => {
+          this.tutorRateLoading = false;
+        }
+      );
+    }
+  }
+
+  addReview() {
+    this.tutorRateLoading = true;
+    if (this.tutorData) {
+      this.homeService.addReview({ tutorId: this.tutorData['id'], studentId: this.studentData['userId'], review: this.review }).subscribe(
+        (response) => {
+          this.tutorRateLoading = false;
+          this.review = '';
+          this.getTutorRates();
+        },
+        (error) => {
+          this.tutorRateLoading = false;
+        }
+      );
+    }
+  }
+
+  popoverSet() {
+    const popover = this.popovers.filter((p) => p.context === 'geoAddressPopover')[0];
+    popover.isShown ? popover.hide() : popover.show();
   }
 }

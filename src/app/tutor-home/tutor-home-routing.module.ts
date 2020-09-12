@@ -7,6 +7,14 @@ const routes: Routes = [
     path: '',
     component: TutorHomeComponent,
   },
+  {
+    path: 'dashboard',
+    component: TutorHomeComponent,
+  },
+  {
+    path: 'other',
+    component: TutorHomeComponent,
+  },
 ];
 
 @NgModule({

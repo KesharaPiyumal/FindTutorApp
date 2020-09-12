@@ -41,4 +41,20 @@ export class HomeService {
       })
     );
   }
+
+  getAllStudentTutorRatesForTutorId(tId) {
+    return this.commonHttpService.postData(this.studentUrl + '/getTutorRates', tId).pipe(
+      map((data) => {
+        return data;
+      })
+    );
+  }
+
+  addReview(reqData) {
+    return this.commonHttpService.postData(this.studentUrl + '/addReview', reqData).pipe(
+        map((data) => {
+          return data;
+        })
+    );
+  }
 }

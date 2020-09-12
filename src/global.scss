@@ -45,10 +45,6 @@
   pointer-events: none;
 }
 
-.nb-theme-default nb-popover .arrow::after {
-  border-bottom: 0.6875rem solid #36f !important;
-}
-
 nb-context-menu {
   min-width: 8rem !important;
   max-width: 8rem !important;
@@ -63,4 +59,12 @@ nb-context-menu {
 ion-toolbar {
   --background: #3366ff;
   --color: white;
+}
+
+.nb-theme-default .location nb-popover .arrow {
+  border-bottom: 0.6875rem solid #36f !important;
+}
+
+.nb-theme-default .location nb-popover .arrow::after {
+  border-bottom: 0.6875rem solid #36f !important;
 }

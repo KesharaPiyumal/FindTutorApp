@@ -6,9 +6,23 @@ import { IonicModule } from '@ionic/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonSharedModule } from '../@common/common-shared/common-shared.module';
+import { NbCardModule, NbProgressBarModule, NbSpinnerModule } from '@nebular/theme';
+import { LoopReversePipe } from './loopReversePipe';
+import { SafeHtmlPipe } from './safeHtmlPipe';
 
 @NgModule({
-  declarations: [TutorHomeComponent],
-  imports: [CommonModule, TutorHomeRoutingModule, IonicModule, FontAwesomeModule, ReactiveFormsModule, CommonSharedModule],
+  declarations: [TutorHomeComponent, LoopReversePipe, SafeHtmlPipe],
+  imports: [
+    CommonModule,
+    TutorHomeRoutingModule,
+    IonicModule,
+    FontAwesomeModule,
+    ReactiveFormsModule,
+    CommonSharedModule,
+    NbCardModule,
+    NbProgressBarModule,
+    NbSpinnerModule,
+  ],
+  providers: [LoopReversePipe, SafeHtmlPipe],
 })
 export class TutorHomeModule {}
