@@ -5,6 +5,8 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { StatusCodes, ToastStatus, UserType } from '../../@common/enum';
 import { ToastService } from '../../@common/services/toast.service';
 import { NbPopoverDirective } from '@nebular/theme';
+import { ProfileModalPageComponent } from '../profile-modal-page/profile-modal-page.component';
+import { MoreAboutTutorComponent } from '../more-about-tutor/more-about-tutor.component';
 
 @Component({
   selector: 'app-view-tutor-profile',
@@ -246,5 +248,14 @@ export class ViewTutorProfileComponent implements OnInit {
   popoverSet() {
     const popover = this.popovers.filter((p) => p.context === 'geoAddressPopover')[0];
     popover.isShown ? popover.hide() : popover.show();
+  }
+
+  async openMoreAboutTutorModal() {
+    const modal = await this.modalController.create({
+      component: MoreAboutTutorComponent,
+      componentProps: { tutor: this.tutorData },
+    });
+    await modal.present();
+    const modalData = await modal.onWillDismiss();
   }
 }

@@ -2,16 +2,16 @@
   <ion-toolbar>
     <div class="d-flex flex-row align-items-center ml-2">
       <ion-buttons>
-        <ion-button shape="round" (click)="dismissModal()"
+        <ion-button style="width: 32px;" shape="round" (click)="dismissModal()"
           ><div class="d-flex justify-content-center align-items-center">
             <nb-icon style="font-size: 24px;" icon="arrow-back-outline"></nb-icon></div
         ></ion-button>
       </ion-buttons>
-      <span style="font-size: 16px;">Profile</span>
+      <span style="font-size: 16px;">My Profile</span>
     </div>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
+<ion-content fullscreen>
   <div class="d-flex justify-content-center align-items-center pt-3 top-bg">
     <div class="pro-pic-container">
       <fa-icon style="font-size: 125px; color: #d1d7e6;" icon="user-circle"></fa-icon>
@@ -27,34 +27,104 @@
       <span style="font-size: 18px; color: white;">{{ user['displayName'] }}</span>
     </div>
   </div>
-  <div class="p-2">
-    <form [formGroup]="profileForm" class="mt-1 mb-2">
-      <div class="d-flex flex-column mb-2">
-        <textarea
-          nbInput
-          rows="2"
-          formControlName="about"
-          type="text"
-          placeholder="About"
-          fullWidth
-          fieldSize="medium"
-          status="primary"
-        ></textarea>
-      </div>
-      <div class="w-100 d-flex flex-row align-items-center">
-        <div style="width: calc(100vw - 61px);" class="mr-1 disabled-gl">
-          <input nbInput placeholder="Your Location" formControlName="location" fullWidth fieldSize="medium" status="primary" />
+  <div [nbSpinner]="tutorLoading" nbSpinnerStatus="info">
+    <div class="p-3" *ngIf="user ? user['type'] === UserType.Tutor : false">
+      <form [formGroup]="profileForm" class="mt-1 mb-2">
+        <label class="label">About:</label>
+        <div class="d-flex flex-column mb-2">
+          <textarea
+            nbInput
+            rows="2"
+            formControlName="about"
+            type="text"
+            placeholder="About"
+            fullWidth
+            fieldSize="medium"
+            status="primary"
+          ></textarea>
         </div>
-        <button nbButton size="medium" status="primary" (click)="updateLocation()">
-          <nb-icon pack="eva" icon="pin-outline"></nb-icon>
-        </button>
-      </div>
-    </form>
-    <button nbButton fullWidth ghost status="primary" (click)="updateData()">Update</button>
-  </div>
+        <div class="mb-3">
+          <label class="label">Location:</label>
+          <div class="w-100 d-flex flex-row align-items-center">
+            <div style="width: calc(100vw - 61px);" class="mr-1 disabled-gl">
+              <input nbInput placeholder="Your Location" formControlName="location" fullWidth fieldSize="medium" status="primary" />
+            </div>
+            <button nbButton size="medium" status="primary" (click)="updateLocation()">
+              <nb-icon pack="eva" icon="pin-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+        <div class="d-flex flex-column mb-3">
+          <div style="border-bottom: 1px solid #36f;">
+            <span style="color: #36f;">Education</span>
+          </div>
+          <div class="mt-2">
+            <label class="label">Highest Education Qualification:</label>
+            <textarea
+              nbInput
+              rows="2"
+              formControlName="highestEducationQualification"
+              type="text"
+              fullWidth
+              fieldSize="medium"
+              status="primary"
+            ></textarea>
+          </div>
+          <div class="mt-2">
+            <label class="label">Higher Education At:</label>
+            <textarea
+              nbInput
+              rows="2"
+              formControlName="higherStudiedAt"
+              type="text"
+              fullWidth
+              fieldSize="medium"
+              status="primary"
+            ></textarea>
+          </div>
+          <div class="mt-2">
+            <label class="label">Secondary Education At:</label>
+            <textarea
+              nbInput
+              rows="2"
+              formControlName="secondaryStudiedAt"
+              type="text"
+              fullWidth
+              fieldSize="medium"
+              status="primary"
+            ></textarea>
+          </div>
+          <div class="mt-2">
+            <label class="label">Primary Education At:</label>
+            <textarea
+              nbInput
+              rows="2"
+              formControlName="primaryStudiedAt"
+              type="text"
+              fullWidth
+              fieldSize="medium"
+              status="primary"
+            ></textarea>
+          </div>
+        </div>
+        <div class="d-flex flex-column">
+          <div style="border-bottom: 1px solid #36f;">
+            <span style="color: #36f;">Personal</span>
+          </div>
+          <div class="row mb-2 mt-2">
+            <div class="col-2"><label class="label">Phone:</label></div>
+            <div class="col-10">
+              <input nbInput formControlName="phone" type="number" fullWidth fieldSize="medium" status="primary" />
+            </div>
+          </div>
+        </div>
+      </form>
+      <button nbButton fullWidth status="primary" (click)="updateData()">Save<fa-icon class="ml-2" icon="save"></fa-icon></button>
+    </div>
 
-  <!--input image file-->
-  <div style="display: none;">
-    <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)" />
+    <!--input image file-->
+    <div style="display: none;">
+      <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" #fileInput (change)="uploadFile($event)" />
+    </div>
   </div>
 </ion-content>

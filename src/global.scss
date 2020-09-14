@@ -68,3 +68,13 @@ ion-toolbar {
 .nb-theme-default .location nb-popover .arrow::after {
   border-bottom: 0.6875rem solid #36f !important;
 }
+
+.nb-theme-default [nbInput].size-medium {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+}
+
+.nb-theme-default [nbInput].size-small {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}

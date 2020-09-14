@@ -19,6 +19,7 @@ export class ProfileModalPageComponent implements OnInit {
   tutorLoading = false;
   latitudeUpdated: any;
   longitudeUpdated: any;
+  UserType: typeof UserType = UserType;
   constructor(
     public modalController: ModalController,
     public formBuilder: FormBuilder,
@@ -39,6 +40,11 @@ export class ProfileModalPageComponent implements OnInit {
     this.profileForm = this.formBuilder.group({
       about: [''],
       location: [''],
+      highestEducationQualification: [''],
+      higherStudiedAt: [''],
+      secondaryStudiedAt: [''],
+      primaryStudiedAt: [''],
+      phone: [''],
     });
     if (this.tutor) {
       this.getTutor();
@@ -63,6 +69,13 @@ export class ProfileModalPageComponent implements OnInit {
         tutorId: this.tutor['userId'],
         longitude: this.longitudeUpdated ? this.longitudeUpdated : this.tutor['longitude'],
         latitude: this.latitudeUpdated ? this.latitudeUpdated : this.tutor['latitude'],
+        highestEducationQualification: this.profileForm.get('highestEducationQualification').value
+          ? this.profileForm.get('highestEducationQualification').value
+          : '',
+        higherStudiedAt: this.profileForm.get('higherStudiedAt').value ? this.profileForm.get('higherStudiedAt').value : '',
+        secondaryStudiedAt: this.profileForm.get('secondaryStudiedAt').value ? this.profileForm.get('secondaryStudiedAt').value : '',
+        primaryStudiedAt: this.profileForm.get('primaryStudiedAt').value ? this.profileForm.get('primaryStudiedAt').value : '',
+        mobileNumber: this.profileForm.get('phone').value ? this.profileForm.get('phone').value : '',
       };
       this.tutorHomeService.updateTutorData(updateTutorData).subscribe(
         (response) => {
@@ -87,6 +100,11 @@ export class ProfileModalPageComponent implements OnInit {
           this.profileForm.patchValue({
             about: response.data['about'],
             location: response.data['geoAddress'],
+            highestEducationQualification: response.data['highestEducationQualification'],
+            higherStudiedAt: response.data['higherStudiedAt'],
+            secondaryStudiedAt: response.data['secondaryStudiedAt'],
+            primaryStudiedAt: response.data['primaryStudiedAt'],
+            phone: response.data['mobileNumber'],
           });
         }
       },

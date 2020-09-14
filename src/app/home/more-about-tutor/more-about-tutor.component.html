@@ -1,0 +1,43 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <div class="d-flex justify-content-between align-items-center pl-3 pr-1">
+      <span style="font-size: 16px;">{{ tutorData ? tutorData['firstName'] + ' ' + tutorData['lastName'] : '' }}</span>
+      <ion-buttons>
+        <ion-button style="width: 32px;" shape="round" (click)="dismissModal()"
+          ><div class="d-flex justify-content-center align-items-center">
+            <nb-icon style="font-size: 24px;" icon="close-outline"></nb-icon></div
+        ></ion-button>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <div class="p-3">
+    <div class="d-flex flex-column mb-3">
+      <div style="border-bottom: 1px solid #36f;">
+        <span style="color: #36f;">Education</span>
+      </div>
+      <div class="mt-2">
+        <label class="label">Highest Education Qualification:</label>
+      </div>
+      <div class="mt-2">
+        <label class="label">Higher Education At:</label>
+      </div>
+      <div class="mt-2">
+        <label class="label">Secondary Education At:</label>
+      </div>
+      <div class="mt-2">
+        <label class="label">Primary Education At:</label>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div style="border-bottom: 1px solid #36f;">
+        <span style="color: #36f;">Personal</span>
+      </div>
+      <div class="row mb-2 mt-2">
+        <div class="col-2"><label class="label">Phone:</label></div>
+        <div class="col-10"></div>
+      </div>
+    </div>
+  </div>
+</ion-content>
