@@ -19,18 +19,18 @@
 .sign-up-text {
   text-decoration: none;
   margin-left: 5px;
-  color: #8f9bb3;
+  color: #3366ff;
+  font-weight: bold !important;
   font: 0.8rem 'Open Sans', sans-serif;
   &:active {
     cursor: pointer;
-    color: #3366ff;
   }
 }
 .forgot-password-text {
   text-decoration: none;
-  color: #8f9bb3;
+  color: #3366ff;
+  font-weight: bold;
   &:active {
     cursor: pointer;
-    color: #3366ff;
   }
 }
