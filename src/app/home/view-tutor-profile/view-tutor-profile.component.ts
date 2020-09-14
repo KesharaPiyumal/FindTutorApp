@@ -216,11 +216,13 @@ export class ViewTutorProfileComponent implements OnInit {
           this.tutorRateLoading = false;
           this.tutorRateList = response.data;
           this.tutorRateList.forEach((item) => {
+            item['border'] = true;
             item['width'] = (+item['rateId'] / 5) * 47.35 + 'px';
             if (item.studentId === this.studentData['userId'] && item.review) {
               this.addTutorReview = false;
             }
           });
+          this.tutorRateList[this.tutorRateList.length - 1]['border'] = false;
         },
         (error) => {
           this.tutorRateLoading = false;
